@@ -20,7 +20,7 @@ SMTP_HOST     = os.environ.get("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT     = int(os.environ.get("SMTP_PORT", "587"))
 SMTP_USER     = os.environ.get("SMTP_USER", "giachuong08@gmail.com")
 SMTP_PASS     = os.environ.get("SMTP_PASS", "ktxq zybj aigw msfo")
-print(SMTP_PASS)
+
 SMTP_SENDER   = os.environ.get("SMTP_SENDER", "xellox shop <giachuong08@gmail.com>")
 SHOP_NAME     = os.environ.get("SHOP_NAME", "xellox shop")
 SMTP_SENDER   = os.environ.get("SMTP_SENDER", "xellox shop <giachuong08@gmail.com>")
