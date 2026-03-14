@@ -1,0 +1,9 @@
+flask>=2.3.0
+gunicorn>=21.0.0
+Werkzeug>=2.3.0
+cloudinary>=1.36.0
+mbbank-lib
+psutil>=5.9.0
+redis>=4.5.0
+
+

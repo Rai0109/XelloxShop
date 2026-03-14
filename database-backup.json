@@ -1,0 +1,341 @@
+{
+  "products": [
+    {
+      "id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "name": "Quản lý nhóm zalo",
+      "description": "Djjjdkd",
+      "price": 10000,
+      "sale_price": 0,
+      "category": "Bot Zalo",
+      "type": "sell",
+      "image": "https://photo-stal-26.zdn.vn/gr/jxl/ca4698e4afa563fb3ab4/283198749228259232.jxl",
+      "file_url": "https://www.mediafire.com/file/eonljt75sognwew/main.py/file",
+      "views": 16,
+      "created_at": "26/02/2026",
+      "featured": true,
+      "stock": -1,
+      "rating_avg": 5.0,
+      "rating_count": 1
+    }
+  ],
+  "users": [
+    {
+      "id": "344b2b08-88d1-4f3b-bd5a-0d58d34adcfc",
+      "username": "Raichin",
+      "email": "giachuong08@gmail.com",
+      "password": "de16c5a461b055b7bf3ee16cedb012aa562ee6dc79b62ad496e4f07cbbd0e43f",
+      "balance": 0,
+      "created_at": "26/02/2026"
+    },
+    {
+      "id": "7813932e-3318-4648-9294-47bc1e522a6a",
+      "username": "xellox",
+      "email": "xellox",
+      "password": "de16c5a461b055b7bf3ee16cedb012aa562ee6dc79b62ad496e4f07cbbd0e43f",
+      "balance": 960000,
+      "created_at": "26/02/2026",
+      "cart": [],
+      "full_name": "Hồ Nhật Trường",
+      "phone": "0967427517",
+      "avatar": "https://png.pngtree.com/thumb_back/fw800/background/20240205/pngtree-anime-girl-japan-with-pink-sakura-tree-image_15621406.jpg"
+    },
+    {
+      "id": "4df4c6db-74bd-4369-8723-f92dbf1568b3",
+      "username": "xellox1",
+      "email": "truong77kk@gmail.com",
+      "password": "2558a34d4d20964ca1d272ab26ccce9511d880579593cd4c9e01ab91ed00f325",
+      "balance": 0,
+      "referral_code": "XELLOX0AC4",
+      "referred_by": "",
+      "cart": [],
+      "avatar": "",
+      "full_name": "",
+      "phone": "",
+      "created_at": "14/03/2026",
+      "email_verified": true
+    },
+    {
+      "id": "6f1bcbbb-155d-42bb-bf8f-079b24522c2e",
+      "username": "xellox2",
+      "email": "mylagia668@gmail.com",
+      "password": "de16c5a461b055b7bf3ee16cedb012aa562ee6dc79b62ad496e4f07cbbd0e43f",
+      "balance": 0,
+      "referral_code": "XELLOXF5D0",
+      "referred_by": "",
+      "cart": [],
+      "avatar": "",
+      "full_name": "",
+      "phone": "",
+      "created_at": "14/03/2026",
+      "email_verified": true
+    }
+  ],
+  "orders": [
+    {
+      "id": "99b4df9a-5a27-48b9-a324-4b5743261046",
+      "user": "xellox",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "amount": 10000,
+      "coupon": "",
+      "discount": 0,
+      "file_url": "https://www.mediafire.com/file/eonljt75sognwew/main.py/file",
+      "created_at": "26/02/2026 18:06"
+    },
+    {
+      "id": "9cf1d2c0-c6ae-425c-a55c-ca289c422781",
+      "user": "xellox",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "amount": 10000,
+      "original_price": 10000,
+      "coupon": "",
+      "discount": 0,
+      "file_url": "https://www.mediafire.com/file/eonljt75sognwew/main.py/file",
+      "status": "completed",
+      "created_at": "27/02/2026 21:22"
+    },
+    {
+      "id": "3f3adf72-c20c-4ec6-8058-df3ea156c984",
+      "user": "raichontui",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "amount": 10000,
+      "original_price": 10000,
+      "coupon": "",
+      "discount": 0,
+      "file_url": "https://www.mediafire.com/file/eonljt75sognwew/main.py/file",
+      "status": "completed",
+      "license_key": "BONZ-NHU9-0A2M-ZYEV-GMJD",
+      "created_at": "13/03/2026 21:42"
+    },
+    {
+      "id": "73ab24a9-0de0-4a17-9143-d6c2cbe2fe82",
+      "user": "xellox",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "amount": 10000,
+      "original_price": 10000,
+      "coupon": "",
+      "discount": 0,
+      "file_url": "https://www.mediafire.com/file/eonljt75sognwew/main.py/file",
+      "status": "completed",
+      "license_key": "BONZ-1AWC-0S00-EEUX-7LYM",
+      "created_at": "13/03/2026 22:14"
+    },
+    {
+      "id": "766f782a-7a9d-464e-a4a9-fcc00a54868e",
+      "user": "xellox",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "amount": 10000,
+      "original_price": 10000,
+      "coupon": "",
+      "discount": 0,
+      "file_url": "https://www.mediafire.com/file/eonljt75sognwew/main.py/file",
+      "status": "completed",
+      "license_key": "BONZ-H9BO-WOEL-PK2Y-3EEI",
+      "created_at": "13/03/2026 22:14"
+    },
+    {
+      "id": "d13f2011-2657-4e9a-b8e8-3651e3b18933",
+      "user": "xellox",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "amount": 10000,
+      "original_price": 10000,
+      "coupon": "",
+      "discount": 0,
+      "file_url": "https://www.mediafire.com/file/eonljt75sognwew/main.py/file",
+      "status": "completed",
+      "license_key": "BONZ-Z1CR-VHZZ-D20G-1YNW",
+      "created_at": "14/03/2026 09:43"
+    }
+  ],
+  "categories": [
+    "Bot Zalo",
+    "Bot Facebook",
+    "Bot Discord",
+    "API",
+    "Source Code",
+    "Tool"
+  ],
+  "admins": [
+    {
+      "username": "admin",
+      "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"
+    }
+  ],
+  "mb_settings": {
+    "username": "0967427517",
+    "account_number": "0967427517",
+    "account_holder": "HO NHAT TRUONG",
+    "bank_name": "MB Bank",
+    "enabled": true,
+    "password": ""
+  },
+  "processed_txids": [
+    "FT26057256047912",
+    "FT26058626983330",
+    "FT26058660822069",
+    "FT26072549670607",
+    "FT26072970488869",
+    "FT26072080067504",
+    "FT26057032121109",
+    "FT26072380295857",
+    "FT26057281000977",
+    "FT26058063284618",
+    "FT26058279045798"
+  ],
+  "topup_requests": [
+    {
+      "id": "340d93f3-4eb2-4832-b1d4-12f78c1c5a1c",
+      "username": "xellox",
+      "amount": 10000,
+      "code": "NAPXELLOX6F912F",
+      "status": "completed",
+      "created_at": "26/02/2026 18:04:49",
+      "expires_at": "26/02/2026 18:34:49",
+      "amount_received": 10000,
+      "xu_added": 10000,
+      "completed_at": "26/02/2026 18:05:40",
+      "tx_ref": "FT26057256047912"
+    },
+    {
+      "id": "4c01df60-3fba-400b-a4cf-f449d7888b3e",
+      "username": "xellox",
+      "amount": 500000,
+      "code": "NAPXELLOX8E8222",
+      "status": "pending",
+      "created_at": "27/02/2026 21:24:49",
+      "expires_at": "27/02/2026 21:54:49"
+    },
+    {
+      "id": "b95888b9-96f5-4f79-9d3f-ccbd24691671",
+      "username": "raichontui",
+      "amount": 500000,
+      "code": "NAPRAICHOEC8A05",
+      "status": "pending",
+      "created_at": "13/03/2026 21:43:42",
+      "expires_at": "13/03/2026 22:13:42"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "f48ffb18-319e-41e6-a3f6-bbe57385cc3b",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "username": "raichontui",
+      "rating": 5,
+      "content": "siuuu",
+      "approved": true,
+      "created_at": "13/03/2026 21:43:17"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "de24a0da-76b5-4bc0-aa5f-1af06b6baeae",
+      "username": "xellox",
+      "title": "🛍️ Mua hàng thành công",
+      "body": "Đã mua 'Quản lý nhóm zalo' với giá 10,000 xu.",
+      "type": "success",
+      "read": true,
+      "created_at": "27/02/2026 21:22:40"
+    },
+    {
+      "id": "900b178e-969d-41a0-9871-cae29ceebacd",
+      "username": "raichontui",
+      "title": "🛍️ Mua hàng thành công",
+      "body": "Đã mua 'Quản lý nhóm zalo'. Key: BONZ-NHU9-0A2M-ZYEV-GMJD",
+      "type": "success",
+      "read": false,
+      "created_at": "13/03/2026 21:42:33"
+    },
+    {
+      "id": "ed033ede-ed4a-4667-90af-ff73535abf7a",
+      "username": "xellox",
+      "title": "🛍️ Mua hàng thành công",
+      "body": "Đã mua 'Quản lý nhóm zalo'. Key: BONZ-1AWC-0S00-EEUX-7LYM",
+      "type": "success",
+      "read": true,
+      "created_at": "13/03/2026 22:14:05"
+    },
+    {
+      "id": "f5c44818-3f0b-4158-8dfb-221e349857d7",
+      "username": "xellox",
+      "title": "🛍️ Mua hàng thành công",
+      "body": "Đã mua 'Quản lý nhóm zalo'. Key: BONZ-H9BO-WOEL-PK2Y-3EEI",
+      "type": "success",
+      "read": true,
+      "created_at": "13/03/2026 22:14:10"
+    },
+    {
+      "id": "ae898fb9-afa0-421e-877a-ef6b68f049db",
+      "username": "xellox",
+      "title": "🔒 Đổi mật khẩu",
+      "body": "Mật khẩu tài khoản đã được thay đổi.",
+      "type": "info",
+      "read": true,
+      "created_at": "14/03/2026 09:41:46"
+    },
+    {
+      "id": "80f79775-73d9-494b-8277-a6ea96065535",
+      "username": "xellox",
+      "title": "🛍️ Mua hàng thành công",
+      "body": "Đã mua 'Quản lý nhóm zalo'. Key: BONZ-Z1CR-VHZZ-D20G-1YNW",
+      "type": "success",
+      "read": true,
+      "created_at": "14/03/2026 09:43:37"
+    }
+  ],
+  "referral_rewards": [],
+  "coupons": [],
+  "settings": {
+    "referral_reward": 10000,
+    "referral_topup_bonus_pct": 5,
+    "invoice_shop_name": "Xelloxx Shop",
+    "invoice_address": "",
+    "invoice_phone": ""
+  },
+  "license_keys": [
+    {
+      "id": "f7ba673b-6ff0-439a-b526-a71c212a1339",
+      "key": "BONZ-NHU9-0A2M-ZYEV-GMJD",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "username": "raichontui",
+      "order_id": "3f3adf72-c20c-4ec6-8058-df3ea156c984",
+      "created_at": "13/03/2026 21:42:33",
+      "active": true
+    },
+    {
+      "id": "5ba2f147-b427-459e-aee1-473adb2ca1a3",
+      "key": "BONZ-1AWC-0S00-EEUX-7LYM",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "username": "xellox",
+      "order_id": "73ab24a9-0de0-4a17-9143-d6c2cbe2fe82",
+      "created_at": "13/03/2026 22:14:05",
+      "active": true
+    },
+    {
+      "id": "d8e633f9-daa2-40bf-bab5-7ee344e35a1b",
+      "key": "BONZ-H9BO-WOEL-PK2Y-3EEI",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "username": "xellox",
+      "order_id": "766f782a-7a9d-464e-a4a9-fcc00a54868e",
+      "created_at": "13/03/2026 22:14:10",
+      "active": true
+    },
+    {
+      "id": "7d260c33-c7f8-42c5-b975-091a662a864c",
+      "key": "BONZ-Z1CR-VHZZ-D20G-1YNW",
+      "product_id": "2f5b7363-17f7-4c0a-8518-3a8128d2b80a",
+      "product_name": "Quản lý nhóm zalo",
+      "username": "xellox",
+      "order_id": "d13f2011-2657-4e9a-b8e8-3651e3b18933",
+      "created_at": "14/03/2026 09:43:37",
+      "active": true
+    }
+  ]
+}
