@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hồ sơ cá nhân - XELLOX</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080c14;
+        --bg2: #0f1623;
+        --card: #111827;
+        --accent: #ff6a00;
+        --accent2: #ff9500;
+        --text: #f0f0f0;
+        --muted: #8899aa;
+        --border: rgba(255, 150, 0, 0.12);
+        --green: #10b981;
+        --red: #ef4444;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        min-height: 100vh;
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 0.9rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(8, 12, 20, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        font-size: 1.3rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-decoration: none;
+      }
+      .nav-back {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--text);
+      }
+      main {
+        padding: 5.5rem 1.5rem 3rem;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .page-header {
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .avatar-circle {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        flex-shrink: 0;
+        border: 3px solid rgba(255, 106, 0, 0.3);
+      }
+      .page-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+      }
+      .page-sub {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.2rem;
+      }
+      .card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .form-row {
+        margin-bottom: 1rem;
+      }
+      label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 0.35rem;
+        font-family: "Space Mono", monospace;
+        letter-spacing: 0.5px;
+      }
+      input {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        font-size: 0.88rem;
+        padding: 0.7rem 0.9rem;
+        outline: none;
+        transition: 0.2s;
+        width: 100%;
+      }
+      input:focus {
+        border-color: var(--accent);
+      }
+      input:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      @media (max-width: 500px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 10px;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.88rem;
+        cursor: pointer;
+        border: none;
+        transition: 0.2s;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+      }
+      .btn-primary:hover {
+        filter: brightness(1.1);
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+      .btn-outline:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .info-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .info-row:last-child {
+        border: none;
+        padding-bottom: 0;
+      }
+      .info-label {
+        font-size: 0.8rem;
+        color: var(--muted);
+        font-family: "Space Mono", monospace;
+      }
+      .info-val {
+        font-size: 0.88rem;
+        font-weight: 600;
+      }
+      .badge-verified {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: var(--green);
+        border-radius: 100px;
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
+        font-family: "Space Mono", monospace;
+      }
+      .toast {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        padding: 0.75rem 1.3rem;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        z-index: 9999;
+        transform: translateY(80px);
+        opacity: 0;
+        transition: 0.3s;
+        max-width: 300px;
+      }
+      .toast.green {
+        background: var(--green);
+      }
+      .toast.red {
+        background: var(--red);
+      }
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 1rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="logo">🛒 XELLOX </a>
+      <a href="/" class="nav-back">← Về trang chủ</a>
+    </nav>
+    <div class="toast" id="toast"></div>
+    <main>
+      <div class="page-header">
+        <div class="avatar-circle" id="avatarEl">👤</div>
+        <div>
+          <div class="page-title" id="headerName">Hồ sơ cá nhân</div>
+          <div class="page-sub" id="headerSub">
+            Chỉnh sửa thông tin tài khoản
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Info -->
+      <div class="card">
+        <div class="info-row">
+          <span class="info-label">Tên đăng nhập</span>
+          <span class="info-val" id="infoUsername">—</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem">
+            <span class="info-val" id="infoEmail">—</span>
+            <span class="badge-verified" id="emailBadge" style="display: none"
+              >✅ Đã xác thực</span
+            >
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Số dư</span>
+          <span class="info-val" style="color: var(--accent2)" id="infoBalance"
+            >0 xu</span
+          >
+        </div>
+        <div class="info-row">
+          <span class="info-label">Ngày đăng ký</span>
+          <span class="info-val" id="infoJoined">—</span>
+        </div>
+      </div>
+
+      <!-- Edit Profile -->
+      <div class="card">
+        <div class="card-title">✏️ Chỉnh sửa thông tin</div>
+        <div class="grid2">
+          <div class="form-row">
+            <label>HỌ VÀ TÊN</label
+            ><input type="text" id="fullName" placeholder="Nguyễn Văn A" />
+          </div>
+          <div class="form-row">
+            <label>SỐ ĐIỆN THOẠI</label
+            ><input type="tel" id="phone" placeholder="0912345678" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label>AVATAR URL (tùy chọn)</label
+          ><input type="url" id="avatar" placeholder="https://..." />
+        </div>
+        <button class="btn btn-primary" onclick="saveProfile()">
+          💾 Lưu thay đổi
+        </button>
+      </div>
+
+      <!-- Change Password -->
+      <div class="card">
+        <div class="card-title">🔒 Đổi mật khẩu</div>
+        <div class="form-row">
+          <label>MẬT KHẨU HIỆN TẠI</label
+          ><input
+            type="password"
+            id="curPw"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+        </div>
+        <div class="grid2">
+          <div class="form-row">
+            <label>MẬT KHẨU MỚI</label
+            ><input
+              type="password"
+              id="newPw"
+              placeholder="•••••••• (≥6 ký tự)"
+              autocomplete="new-password"
+            />
+          </div>
+          <div class="form-row">
+            <label>XÁC NHẬN MẬT KHẨU MỚI</label
+            ><input
+              type="password"
+              id="newPw2"
+              placeholder="••••••••"
+              autocomplete="new-password"
+            />
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="changePassword()">
+          🔑 Đổi mật khẩu
+        </button>
+      </div>
+
+      <!-- Quick links -->
+      <div class="card">
+        <div class="card-title">🔗 Liên kết nhanh</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.7rem">
+          <a href="/orders" class="btn btn-primary">🛒 Sản phẩm đã mua</a>
+          <a href="/referral" class="btn btn-outline">🎁 Giới thiệu</a>
+          <a href="/topup" class="btn btn-outline">💰 Nạp tiền</a>
+          <a href="/notifications" class="btn btn-outline">🔔 Thông báo</a>
+          <button
+            class="btn"
+            onclick="logout()"
+            style="
+              background: rgba(239, 68, 68, 0.15);
+              color: var(--red);
+              border: 1px solid rgba(239, 68, 68, 0.3);
+            "
+          >
+            🚪 Đăng xuất
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function showToast(msg, type = "green") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast " + type + " show";
+        setTimeout(() => t.classList.remove("show"), 3000);
+      }
+
+      async function loadProfile() {
+        const r = await fetch("/api/me");
+        const d = await r.json();
+        if (!d.ok) {
+          window.location.href = "/login";
+          return;
+        }
+        document.getElementById("infoUsername").textContent = d.username;
+        document.getElementById("infoEmail").textContent = d.email || "—";
+        document.getElementById("infoBalance").textContent =
+          (d.balance || 0).toLocaleString("vi-VN") + " xu";
+        document.getElementById("infoJoined").textContent = d.created_at || "—";
+        document.getElementById("headerName").textContent =
+          d.full_name || d.username;
+        document.getElementById("headerSub").textContent = "@" + d.username;
+        if (d.email_verified)
+          document.getElementById("emailBadge").style.display = "inline";
+        if (d.full_name)
+          document.getElementById("fullName").value = d.full_name;
+        if (d.phone) document.getElementById("phone").value = d.phone;
+        if (d.avatar) {
+          document.getElementById("avatar").value = d.avatar;
+          document.getElementById("avatarEl").innerHTML =
+            `<img src="${d.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+        }
+      }
+
+      async function saveProfile() {
+        const btn = event.target;
+        btn.disabled = true;
+        btn.textContent = "Đang lưu...";
+        const r = await fetch("/api/profile/update", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            full_name: document.getElementById("fullName").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            avatar: document.getElementById("avatar").value.trim(),
+          }),
+        });
+        const d = await r.json();
+        btn.disabled = false;
+        btn.textContent = "💾 Lưu thay đổi";
+        if (d.ok) {
+          showToast("✅ " + d.msg);
+          loadProfile();
+        } else showToast("❌ " + d.msg, "red");
+      }
+
+      async function changePassword() {
+        const curPw = document.getElementById("curPw").value;
+        const newPw = document.getElementById("newPw").value;
+        const newPw2 = document.getElementById("newPw2").value;
+        if (!curPw) {
+          showToast("Nhập mật khẩu hiện tại", "red");
+          return;
+        }
+        if (newPw.length < 6) {
+          showToast("Mật khẩu mới tối thiểu 6 ký tự", "red");
+          return;
+        }
+        if (newPw !== newPw2) {
+          showToast("Mật khẩu mới không khớp", "red");
+          return;
+        }
+        const btn = event.target;
+        btn.disabled = true;
+        btn.textContent = "Đang đổi...";
+        const r = await fetch("/api/profile/update", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            current_password: curPw,
+            new_password: newPw,
+          }),
+        });
+        const d = await r.json();
+        btn.disabled = false;
+        btn.textContent = "🔑 Đổi mật khẩu";
+        if (d.ok) {
+          showToast("✅ " + d.msg);
+          document.getElementById("curPw").value = "";
+          document.getElementById("newPw").value = "";
+          document.getElementById("newPw2").value = "";
+        } else showToast("❌ " + d.msg, "red");
+      }
+
+      async function logout() {
+        await fetch("/api/logout");
+        window.location.href = "/login";
+      }
+
+      loadProfile();
+    </script>
+  </body>
+</html>

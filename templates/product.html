@@ -1,0 +1,588 @@
+{% extends 'base.html' %} {% block title %}Sản phẩm - BONZ STORE{% endblock %}
+{% block head %}
+<style>
+  .product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 700px) {
+    .product-detail {
+      grid-template-columns: 1fr;
+    }
+  }
+  .product-img {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 106, 0, 0.1),
+      rgba(255, 149, 0, 0.05)
+    );
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6rem;
+    overflow: hidden;
+    min-height: 260px;
+  }
+  .product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  .product-cat-badge {
+    display: inline-block;
+    background: rgba(255, 106, 0, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(255, 106, 0, 0.3);
+    border-radius: 100px;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.72rem;
+    font-family: "Space Mono", monospace;
+    margin-bottom: 0.7rem;
+  }
+  .product-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .product-desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    white-space: pre-line;
+  }
+  .price-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .price-big {
+    font-size: 1.8rem;
+    font-weight: 800;
+    font-family: "Space Mono", monospace;
+    color: var(--accent2);
+  }
+  .price-orig {
+    font-size: 1rem;
+    color: var(--muted);
+    text-decoration: line-through;
+    font-family: "Space Mono", monospace;
+    margin-left: 0.5rem;
+  }
+  .sale-badge {
+    display: inline-block;
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--red);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 100px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.7rem;
+    font-family: "Space Mono", monospace;
+    margin-left: 0.4rem;
+  }
+  .price-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: "Space Mono", monospace;
+    margin-bottom: 0.2rem;
+  }
+  .stock-info {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    font-family: "Space Mono", monospace;
+  }
+  /* Rating summary */
+  .rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.35rem;
+  }
+  .rating-bar-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: "Space Mono", monospace;
+    width: 12px;
+    text-align: center;
+  }
+  .rating-bar-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .rating-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #ff9500);
+    border-radius: 100px;
+    transition: 0.5s;
+  }
+  .rating-bar-count {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: "Space Mono", monospace;
+    width: 20px;
+    text-align: right;
+  }
+  /* Reviews */
+  .review-section {
+    margin-top: 2.5rem;
+  }
+  .review-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.1rem;
+    margin-bottom: 0.8rem;
+    transition: 0.2s;
+  }
+  .review-card:hover {
+    border-color: rgba(255, 106, 0, 0.25);
+  }
+  .review-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+  }
+  .review-user {
+    font-size: 0.83rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .review-date {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: "Space Mono", monospace;
+  }
+  .review-comment {
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .verified-badge {
+    font-size: 0.65rem;
+    color: var(--green);
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 100px;
+    padding: 0.15rem 0.5rem;
+    font-family: "Space Mono", monospace;
+  }
+  /* Star selector */
+  .star-selector {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.8rem;
+  }
+  .star-selector .star {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: 0.2s;
+    color: rgba(255, 255, 255, 0.15);
+    line-height: 1;
+  }
+  .star-selector .star.active {
+    color: #f59e0b;
+  }
+  .star-selector .star:hover,
+  .star-selector .star:hover ~ .star-selector .star {
+    color: #f59e0b;
+  }
+  .star-selector:hover .star {
+    color: #f59e0b;
+  }
+  .star-selector .star:not(:hover) ~ .star {
+    color: rgba(255, 255, 255, 0.15) !important;
+  }
+  .star-display {
+    color: #f59e0b;
+    font-size: 0.9rem;
+    letter-spacing: 0.1rem;
+  }
+  .write-review-box {
+    background: rgba(255, 106, 0, 0.04);
+    border: 1px solid rgba(255, 106, 0, 0.15);
+    border-radius: 14px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="page" style="max-width: 940px">
+  <div style="margin-bottom: 1rem">
+    <a
+      href="/"
+      style="color: var(--muted); text-decoration: none; font-size: 0.85rem"
+      >← Về trang chủ</a
+    >
+  </div>
+
+  <div class="product-detail" id="productDetail">
+    <div id="productImgWrap">
+      <div class="product-img" id="productImg" style="font-size: 5rem">⏳</div>
+    </div>
+    <div id="productInfo">
+      <div style="color: var(--muted); font-size: 0.85rem">Đang tải...</div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="review-section" id="reviewSection" style="display: none">
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+      "
+    >
+      <h2
+        style="
+          font-size: 1.2rem;
+          font-weight: 800;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        "
+      >
+        ⭐ Đánh giá sản phẩm
+      </h2>
+      <span
+        id="reviewSummaryBadge"
+        style="
+          font-size: 0.82rem;
+          color: var(--muted);
+          font-family: &quot;Space Mono&quot;, monospace;
+        "
+      ></span>
+    </div>
+
+    <!-- Rating breakdown -->
+    <div
+      id="ratingBreakdown"
+      style="
+        display: none;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1.5rem;
+        align-items: center;
+      "
+    >
+      <div style="text-align: center">
+        <div
+          style="
+            font-size: 3.5rem;
+            font-weight: 800;
+            font-family: &quot;Space Mono&quot;, monospace;
+            color: var(--accent2);
+            line-height: 1;
+          "
+          id="avgRatingBig"
+        >
+          0
+        </div>
+        <div
+          id="avgStarsDisplay"
+          style="color: #f59e0b; font-size: 1.1rem; margin: 0.3rem 0"
+        >
+          ☆☆☆☆☆
+        </div>
+        <div
+          style="font-size: 0.75rem; color: var(--muted)"
+          id="totalReviewCount"
+        >
+          0 đánh giá
+        </div>
+      </div>
+      <div id="ratingBars"></div>
+    </div>
+
+    <!-- Write review form -->
+    <div id="writeReviewBox" class="write-review-box" style="display: none">
+      <h3
+        style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.8rem"
+        id="writeReviewTitle"
+      >
+        ✍️ Viết đánh giá của bạn
+      </h3>
+      <div class="star-selector" id="starSelector">
+        <span class="star" onclick="selectStar(1)">★</span>
+        <span class="star" onclick="selectStar(2)">★</span>
+        <span class="star" onclick="selectStar(3)">★</span>
+        <span class="star" onclick="selectStar(4)">★</span>
+        <span class="star" onclick="selectStar(5)">★</span>
+      </div>
+      <div
+        style="
+          font-size: 0.75rem;
+          color: var(--muted);
+          margin-bottom: 0.7rem;
+          font-family: &quot;Space Mono&quot;, monospace;
+        "
+        id="starLabel"
+      >
+        Chọn số sao
+      </div>
+      <textarea
+        id="reviewComment"
+        placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..."
+        rows="4"
+        style="margin-bottom: 0.8rem; resize: vertical"
+      ></textarea>
+      <div style="display: flex; gap: 0.7rem; flex-wrap: wrap">
+        <button
+          class="btn btn-primary"
+          onclick="submitReview()"
+          id="btnSubmitReview"
+        >
+          📤 Gửi đánh giá
+        </button>
+        <button
+          class="btn btn-danger"
+          onclick="deleteMyReview()"
+          id="btnDeleteReview"
+          style="display: none"
+        >
+          🗑 Xóa đánh giá
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="notPurchasedNote"
+      style="
+        display: none;
+        background: rgba(255, 106, 0, 0.04);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.2rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+      "
+    >
+      💡 Bạn cần mua sản phẩm này để viết đánh giá
+    </div>
+    <div
+      id="loginNote"
+      style="
+        display: none;
+        background: rgba(59, 130, 246, 0.04);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.2rem;
+        font-size: 0.85rem;
+        color: #93c5fd;
+      "
+    >
+      👉
+      <a href="/login" style="color: #60a5fa; font-weight: 700">Đăng nhập</a> để
+      viết đánh giá
+    </div>
+
+    <!-- Review list -->
+    <div id="reviewList"></div>
+    <div
+      id="noReviews"
+      style="
+        display: none;
+        text-align: center;
+        padding: 2.5rem;
+        color: var(--muted);
+        font-size: 0.88rem;
+      "
+    >
+      Chưa có đánh giá nào. Hãy là người đầu tiên! 🌟
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+    const PID = '{{ product_id }}';
+    let selectedRating = 0;
+    let myReview = null;
+    let isPurchased = false;
+    const isLoggedIn = {{ 'true' if user else 'false' }};
+
+    const starLabels = ['','😞 Rất tệ','😐 Không hài lòng','😊 Bình thường','😃 Hài lòng','🤩 Tuyệt vời!'];
+
+    async function loadProduct(){
+      const r = await fetch('/api/products/'+PID);
+      const p = await r.json();
+      if(p.error){document.getElementById('productInfo').innerHTML='<div style="color:var(--red)">Sản phẩm không tồn tại</div>';return;}
+
+      // Image
+      const imgEl = document.getElementById('productImg');
+      if(p.image) imgEl.innerHTML=`<img src="${p.image}" alt="${p.name}">`;
+      else imgEl.textContent='📦';
+
+      const price = p.sale_price>0 ? p.sale_price : p.price;
+      const origPrice = p.sale_price>0 ? `<span class="price-orig">${p.price.toLocaleString('vi-VN')}đ</span><span class="sale-badge">-${Math.round((p.price-p.sale_price)/p.price*100)}%</span>` : '';
+      const starsHtml = p.rating_avg>0 ? `<span style="color:#f59e0b">${'★'.repeat(Math.round(p.rating_avg))}${'☆'.repeat(5-Math.round(p.rating_avg))}</span> <span style="color:var(--muted);font-size:.82rem">${p.rating_avg.toFixed(1)} (${p.rating_count} đánh giá)</span>` : '<span style="color:var(--muted);font-size:.82rem">Chưa có đánh giá</span>';
+
+      document.getElementById('productInfo').innerHTML = `
+        <span class="product-cat-badge">${p.category||'Sản phẩm'}</span>
+        <h1 class="product-title">${p.name}</h1>
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap">${starsHtml}</div>
+        <p class="product-desc">${(p.description||'Sản phẩm chất lượng cao.')}</p>
+        <div class="price-section">
+          <div class="price-label">GIÁ</div>
+          <div style="display:flex;align-items:baseline;gap:.3rem">
+            <span class="price-big">${price.toLocaleString('vi-VN')} xu</span>
+            ${origPrice}
+          </div>
+          <div class="stock-info">
+            ${p.stock===-1?'✅ Còn hàng (không giới hạn)':p.stock>0?`✅ Còn ${p.stock} sản phẩm`:'<span style="color:var(--red)">❌ Hết hàng</span>'}
+          </div>
+        </div>
+  ${p.stock!==0?`<div style="display:flex;gap:.7rem;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="addCart()" style="flex:1;justify-content:center">🛒 Thêm vào giỏ hàng</button>
+          <button class="btn btn-outline" onclick="buyNow()" style="flex:1;justify-content:center">⚡ Mua ngay</button>
+        </div>`:`<button class="btn" disabled style="width:100%;justify-content:center;opacity:.5">Hết hàng</button>`}
+      `; // Navbar count now works globally via context_processor
+      };
+    }
+
+    async function loadReviews(){
+      const r = await fetch('/api/reviews/'+PID);
+      const reviews = await r.json();
+      const sec = document.getElementById('reviewSection');
+      sec.style.display='block';
+
+      // Rating breakdown
+      if(reviews.length>0){
+        const avg = reviews.reduce((a,r)=>a+r.rating,0)/reviews.length;
+        const counts=[0,0,0,0,0];
+        reviews.forEach(r=>counts[r.rating-1]++);
+        document.getElementById('avgRatingBig').textContent=avg.toFixed(1);
+        document.getElementById('avgStarsDisplay').textContent='★'.repeat(Math.round(avg))+'☆'.repeat(5-Math.round(avg));
+        document.getElementById('totalReviewCount').textContent=reviews.length+' đánh giá';
+        document.getElementById('ratingBreakdown').style.display='grid';
+        const bars=document.getElementById('ratingBars');
+        bars.innerHTML=[5,4,3,2,1].map(s=>`
+          <div class="rating-bar-row">
+            <span class="rating-bar-label">${s}</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${reviews.length?counts[s-1]/reviews.length*100:0}%"></div></div>
+            <span class="rating-bar-count">${counts[s-1]}</span>
+          </div>`).join('');
+        document.getElementById('reviewSummaryBadge').textContent=`${avg.toFixed(1)}★ · ${reviews.length} đánh giá`;
+      } else {
+        document.getElementById('ratingBreakdown').style.display='none';
+        document.getElementById('reviewSummaryBadge').textContent='Chưa có đánh giá';
+      }
+
+      // User review status
+      if(isLoggedIn){
+        const mr = await fetch('/api/my-review/'+PID);
+        const md = await mr.json();
+        isPurchased = md.purchased;
+        myReview = md.review;
+        if(isPurchased){
+          const box = document.getElementById('writeReviewBox');
+          box.style.display='block';
+          if(myReview){
+            document.getElementById('writeReviewTitle').textContent='✏️ Chỉnh sửa đánh giá của bạn';
+            document.getElementById('btnSubmitReview').textContent='💾 Cập nhật đánh giá';
+            document.getElementById('btnDeleteReview').style.display='inline-flex';
+            document.getElementById('reviewComment').value=myReview.content||'';
+            selectStar(myReview.rating);
+          }
+        } else {
+          document.getElementById('notPurchasedNote').style.display='block';
+        }
+      } else {
+        document.getElementById('loginNote').style.display='block';
+      }
+
+      // Review list
+      if(!reviews.length){
+        document.getElementById('noReviews').style.display='block';
+        return;
+      }
+      document.getElementById('reviewList').innerHTML = reviews.map(r=>`
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-user">
+              <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ff6a00,#ff9500);display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800">${r.username[0].toUpperCase()}</span>
+              ${r.username}
+              <span class="verified-badge">✓ Đã mua</span>
+              ${r.updated_at?'<span style="font-size:.65rem;color:var(--muted);font-family:\'Space Mono\',monospace">(đã chỉnh sửa)</span>':''}
+            </div>
+            <div style="display:flex;align-items:center;gap:.6rem">
+              <span class="star-display">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+              <span class="review-date">${r.created_at.slice(0,10)}</span>
+            </div>
+          </div>
+          <p class="review-comment">${r.content||''}</p>
+        </div>`).join('');
+    }
+
+    function selectStar(val){
+      selectedRating=val;
+      const stars=document.querySelectorAll('#starSelector .star');
+      stars.forEach((s,i)=>s.classList.toggle('active',i<val));
+      document.getElementById('starLabel').textContent=starLabels[val]||'';
+    }
+
+    async function submitReview(){
+      if(!selectedRating){showToast('⚠️ Vui lòng chọn số sao','red');return;}
+      const content=document.getElementById('reviewComment').value.trim();
+      if(content.length<5){showToast('Nhận xét quá ngắn (tối thiểu 5 ký tự)','red');return;}
+      const btn=document.getElementById('btnSubmitReview');
+      btn.disabled=true; btn.textContent='Đang gửi...';
+      const r=await fetch('/api/reviews',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:PID,rating:selectedRating,content})});
+      const d=await r.json();
+      btn.disabled=false;
+      if(d.ok){
+        showToast(d.updated?'✅ Đã cập nhật đánh giá':'✅ Cảm ơn bạn đã đánh giá!');
+        setTimeout(()=>location.reload(),1000);
+      } else showToast(d.msg,'red');
+      btn.textContent=myReview?'💾 Cập nhật đánh giá':'📤 Gửi đánh giá';
+    }
+
+    async function deleteMyReview(){
+      if(!myReview)return;
+      if(!confirm('Xóa đánh giá của bạn?'))return;
+      const r=await fetch('/api/reviews/'+myReview.id,{method:'DELETE'});
+      const d=await r.json();
+      if(d.ok){showToast('🗑 Đã xóa đánh giá');setTimeout(()=>location.reload(),1000);}
+      else showToast(d.msg,'red');
+    }
+
+    async function addCart(){
+      if(!isLoggedIn){showToast('Vui lòng đăng nhập','red');return;}
+      const r=await fetch('/api/cart/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:PID})});
+      const d=await r.json();
+      if(d.ok) showToast('🛒 Đã thêm vào giỏ hàng');
+      else showToast(d.msg,'red');
+    }
+
+    async function buyNow(){
+      if(!isLoggedIn){window.location.href='/login';return;}
+      await addCart();
+      window.location.href=`/checkout?product=${PID}`;
+    }
+
+    loadProduct();
+    loadReviews();
+</script>
+{% endblock %}

@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Đơn hàng của tôi · Xelloxx</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080c14;
+        --bg2: #0f1623;
+        --card: #111827;
+        --accent: #ff6a00;
+        --accent2: #ff9500;
+        --text: #f0f0f0;
+        --muted: #8899aa;
+        --border: rgba(255, 150, 0, 0.12);
+        --green: #10b981;
+        --red: #ef4444;
+        --yellow: #f59e0b;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        min-height: 100vh;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 0.9rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(8, 12, 20, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        font-size: 1.3rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-decoration: none;
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--text);
+      }
+      .nav-user {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .nav-balance {
+        color: var(--accent);
+        font-weight: 700;
+        font-family: "Space Mono", monospace;
+      }
+
+      main {
+        padding: 5.5rem 1.5rem 3rem;
+        max-width: 860px;
+        margin: 0 auto;
+      }
+
+      /* PAGE TITLE */
+      .page-header {
+        margin-bottom: 2rem;
+      }
+      .page-header h1 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.3rem;
+      }
+      .page-header h1 .icon {
+        display: inline-flex;
+        width: 2.2rem;
+        height: 2.2rem;
+        background: rgba(255, 106, 0, 0.15);
+        border: 1px solid rgba(255, 106, 0, 0.3);
+        border-radius: 8px;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+      }
+      .page-header p {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      /* STATS ROW */
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .stat-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .stat-icon {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      .stat-num {
+        font-size: 2rem;
+        font-weight: 800;
+        font-family: "Space Mono", monospace;
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.4rem;
+      }
+      .stat-card.yellow .stat-icon {
+        color: var(--yellow);
+      }
+      .stat-card.yellow .stat-num {
+        color: var(--yellow);
+      }
+      .stat-card.green .stat-icon {
+        color: var(--green);
+      }
+      .stat-card.green .stat-num {
+        color: var(--green);
+      }
+      .stat-card.red .stat-icon {
+        color: var(--red);
+      }
+      .stat-card.red .stat-num {
+        color: var(--red);
+      }
+
+      /* TABS */
+      .tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0;
+      }
+      .tab {
+        padding: 0.6rem 1.2rem;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-family: "Syne", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: 0.2s;
+      }
+      .tab.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .tab:hover:not(.active) {
+        color: var(--text);
+      }
+
+      /* SEARCH */
+      .search-bar {
+        position: relative;
+        margin-bottom: 1.2rem;
+      }
+      .search-bar input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.8rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        font-size: 0.9rem;
+        outline: none;
+        transition: 0.2s;
+      }
+      .search-bar input:focus {
+        border-color: rgba(255, 106, 0, 0.4);
+      }
+      .search-bar .icon {
+        position: absolute;
+        left: 0.9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 1rem;
+      }
+
+      /* ORDER LIST */
+      .order-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      .order-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.2rem 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        transition: 0.2s;
+        cursor: pointer;
+      }
+      .order-card:hover {
+        border-color: rgba(255, 106, 0, 0.3);
+        background: #141e2e;
+      }
+
+      .order-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 10px;
+        background: rgba(255, 106, 0, 0.1);
+        border: 1px solid rgba(255, 106, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+      }
+
+      .order-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .order-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .order-meta {
+        font-size: 0.78rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+      }
+      .order-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+      .order-id {
+        font-family: "Space Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
+
+      .order-right {
+        text-align: right;
+        flex-shrink: 0;
+      }
+      .order-amount {
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--accent);
+        margin-bottom: 0.3rem;
+      }
+      .order-amount.free {
+        color: var(--green);
+      }
+
+      /* STATUS BADGE */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 100px;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+      .badge.done {
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: var(--green);
+      }
+      .badge.pending {
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        color: var(--yellow);
+      }
+      .badge.fail {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: var(--red);
+      }
+
+      /* DOWNLOAD BTN */
+      .btn-dl {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.75rem;
+        background: rgba(255, 106, 0, 0.15);
+        border: 1px solid rgba(255, 106, 0, 0.35);
+        border-radius: 7px;
+        color: var(--accent);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.2s;
+        margin-top: 0.3rem;
+        cursor: pointer;
+        font-family: "Syne", sans-serif;
+      }
+      .btn-dl:hover {
+        background: rgba(255, 106, 0, 0.28);
+      }
+      .btn-invoice {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.75rem;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-radius: 7px;
+        color: #10b981;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Syne", sans-serif;
+        transition: 0.2s;
+        margin-top: 0.3rem;
+      }
+      .btn-invoice:hover {
+        background: rgba(16, 185, 129, 0.2);
+      }
+      .btn-review {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.75rem;
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 7px;
+        color: #f59e0b;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Syne", sans-serif;
+        transition: 0.2s;
+        margin-top: 0.3rem;
+      }
+      .btn-review:hover {
+        background: rgba(245, 158, 11, 0.2);
+      }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 999;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      .modal {
+        background: #111827;
+        border: 1px solid rgba(255, 106, 0, 0.2);
+        border-radius: 16px;
+        padding: 28px;
+        max-width: 520px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal h3 {
+        margin-bottom: 16px;
+        font-size: 1.2rem;
+      }
+      .modal-close {
+        float: right;
+        background: none;
+        border: none;
+        color: #888;
+        font-size: 1.3rem;
+        cursor: pointer;
+      }
+      .stars {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+      .star {
+        font-size: 2rem;
+        cursor: pointer;
+        transition: 0.1s;
+        opacity: 0.4;
+      }
+      .star.active,
+      .star:hover {
+        opacity: 1;
+      }
+      .modal textarea {
+        width: 100%;
+        background: #0f1623;
+        border: 1px solid rgba(255, 150, 0, 0.2);
+        color: #f0f0f0;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-family: "Syne", sans-serif;
+        resize: vertical;
+        min-height: 100px;
+      }
+      .modal textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      .btn-submit-review {
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        color: #fff;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 700;
+        font-family: "Syne", sans-serif;
+        margin-top: 12px;
+        width: 100%;
+      }
+      .invoice-box {
+        font-family: "Space Mono", monospace;
+        font-size: 0.85rem;
+        line-height: 1.8;
+      }
+      .invoice-box .inv-header {
+        border-bottom: 1px solid rgba(255, 150, 0, 0.2);
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+      }
+      .invoice-box .inv-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+      }
+      .invoice-box .inv-row.total {
+        border-top: 1px solid rgba(255, 150, 0, 0.2);
+        margin-top: 8px;
+        padding-top: 8px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .btn-print {
+        background: rgba(255, 106, 0, 0.15);
+        border: 1px solid rgba(255, 106, 0, 0.35);
+        color: var(--accent);
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: "Syne", sans-serif;
+        margin-top: 12px;
+      }
+
+      /* COUPON TAG */
+      .coupon-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.15rem 0.5rem;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        border-radius: 6px;
+        font-size: 0.7rem;
+        color: var(--green);
+      }
+
+      /* EMPTY STATE */
+      .empty {
+        text-align: center;
+        padding: 4rem 1rem;
+      }
+      .empty-icon {
+        font-size: 4rem;
+        opacity: 0.25;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .empty h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .empty p {
+        color: var(--muted);
+        font-size: 0.88rem;
+        margin-bottom: 1.5rem;
+      }
+      .btn-primary {
+        display: inline-block;
+        padding: 0.75rem 2rem;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-decoration: none;
+        letter-spacing: 0.5px;
+        transition: 0.2s;
+      }
+      .btn-primary:hover {
+        background: #ff9500;
+        transform: translateY(-1px);
+      }
+
+      /* MODAL */
+      .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 500;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .overlay.open {
+        display: flex;
+      }
+      .modal {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 480px;
+        position: relative;
+      }
+      .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .modal-close:hover {
+        color: var(--text);
+      }
+      .modal h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        padding-right: 2rem;
+      }
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid var(--border);
+        gap: 1rem;
+      }
+      .detail-row:last-child {
+        border-bottom: none;
+      }
+      .detail-label {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .detail-value {
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-align: right;
+        max-width: 65%;
+      }
+      .detail-value.mono {
+        font-family: "Space Mono", monospace;
+        font-size: 0.8rem;
+      }
+      .detail-value.accent {
+        color: var(--accent);
+      }
+      .detail-value.green {
+        color: var(--green);
+      }
+
+      /* LOADING */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          var(--card) 25%,
+          rgba(255, 255, 255, 0.04) 50%,
+          var(--card) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.4s infinite;
+        border-radius: 14px;
+        height: 80px;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .stats-row {
+          grid-template-columns: 1fr 1fr;
+        }
+        .stats-row .stat-card:last-child {
+          grid-column: span 2;
+        }
+        .order-card {
+          flex-wrap: wrap;
+        }
+        .order-right {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 0.3rem;
+        }
+        .page-header h1 {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="logo" href="/">Xell<span style="color: #ff6a00">o</span>xx</a>
+      <a class="nav-back" href="/">
+        <svg
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M19 12H5M12 5l-7 7 7 7" />
+        </svg>
+        Trang chủ
+      </a>
+      <div class="nav-user">
+        👤 <span id="navUser">--</span> &nbsp;|&nbsp; 💰
+        <span class="nav-balance" id="navBal">--</span>đ
+      </div>
+    </nav>
+
+    <main>
+      <div class="page-header">
+        <h1><span class="icon">🛍</span> Đơn hàng của tôi</h1>
+        <p>Theo dõi trạng thái và xem thông tin tài khoản đã mua</p>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="stat-card yellow">
+          <div class="stat-icon">⏱</div>
+          <div class="stat-num" id="statPending">0</div>
+          <div class="stat-label">Chờ duyệt</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">✅</div>
+          <div class="stat-num" id="statDone">0</div>
+          <div class="stat-label">Đã duyệt</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">❌</div>
+          <div class="stat-num" id="statFail">0</div>
+          <div class="stat-label">Từ chối</div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('all', this)">
+          Tất cả
+        </button>
+        <button class="tab" onclick="switchTab('done', this)">Đã duyệt</button>
+        <button class="tab" onclick="switchTab('pending', this)">
+          Chờ duyệt
+        </button>
+        <button class="tab" onclick="switchTab('fail', this)">Từ chối</button>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="search-bar">
+        <span class="icon">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Tìm theo tên sản phẩm..."
+          oninput="renderList()"
+        />
+      </div>
+
+      <!-- LIST -->
+      <div class="order-list" id="orderList">
+        <div class="skeleton"></div>
+        <div class="skeleton" style="height: 70px; opacity: 0.6"></div>
+        <div class="skeleton" style="height: 70px; opacity: 0.3"></div>
+      </div>
+
+      <!-- NEW BUTTON BELOW LIST -->
+      <div
+        style="
+          margin-top: 2.5rem;
+          padding: 1.5rem 0;
+          border-top: 1px solid var(--border);
+        "
+      ></div>
+    </main>
+
+    <!-- DETAIL MODAL -->
+    <div
+      class="overlay"
+      id="modalOverlay"
+      onclick="if (event.target === this) closeModal();"
+    >
+      <div class="modal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h3>📄 Chi tiết đơn hàng</h3>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+
+    <script>
+      let allOrders = [];
+      let currentTab = "all";
+
+      async function init() {
+        // Load user info
+        const res = await fetch("/api/me");
+        const u = await res.json();
+        if (!u.ok) {
+          window.location.href = "/login";
+          return;
+        }
+        document.getElementById("navUser").textContent = u.username;
+        document.getElementById("navBal").textContent = fmt(u.balance || 0);
+
+        // Load orders
+        const r = await fetch("/api/my-orders");
+        const d = await r.json();
+        allOrders = d.orders || [];
+        updateStats();
+        renderList();
+      }
+
+      function fmt(n) {
+        return new Intl.NumberFormat("vi-VN").format(n);
+      }
+
+      function getStatus(o) {
+        if (o.status === "fail") return "fail";
+        if (o.file_url) return "done";
+        if (o.status === "done") return "done";
+        return "pending";
+      }
+
+      function updateStats() {
+        document.getElementById("statPending").textContent = allOrders.filter(
+          (o) => getStatus(o) === "pending",
+        ).length;
+        document.getElementById("statDone").textContent = allOrders.filter(
+          (o) => getStatus(o) === "done",
+        ).length;
+        document.getElementById("statFail").textContent = allOrders.filter(
+          (o) => getStatus(o) === "fail",
+        ).length;
+      }
+
+      function switchTab(tab, btn) {
+        currentTab = tab;
+        document
+          .querySelectorAll(".tab")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderList();
+      }
+
+      function renderList() {
+        const q = document.getElementById("searchInput").value.toLowerCase();
+        let list = allOrders;
+        if (currentTab !== "all")
+          list = list.filter((o) => getStatus(o) === currentTab);
+        if (q)
+          list = list.filter((o) => o.product_name.toLowerCase().includes(q));
+
+        const el = document.getElementById("orderList");
+        if (!list.length) {
+          el.innerHTML = `
+      <div class="empty">
+        <span class="empty-icon">🛍</span>
+        <h3>Chưa có đơn hàng</h3>
+        <p>Bạn chưa mua tài khoản nào. Khám phá ngay!</p>
+        <a href="/" class="btn-primary">MUA TÀI KHOẢN NGAY</a>
+      </div>`;
+          return;
+        }
+
+        el.innerHTML = list
+          .map((o) => {
+            const st = getStatus(o);
+            const badgeMap = {
+              done: `<span class="badge done">✔ Đã duyệt</span>`,
+              pending: `<span class="badge pending">⏱ Chờ duyệt</span>`,
+              fail: `<span class="badge fail">✕ Từ chối</span>`,
+            };
+            const dlBtn = o.file_url
+              ? `<button class="btn-dl" onclick="secureDownload('${o.id}')">⬇ Tải file</button>`
+              : "";
+            const coupon = o.coupon
+              ? `<span class="coupon-tag">🏷 ${o.coupon} -${fmt(o.discount || 0)}đ</span>`
+              : "";
+            const isFree = o.amount === 0;
+
+            return `<div class="order-card" onclick="openModal('${o.id}')">
+      <div class="order-icon">📦</div>
+      <div class="order-info">
+        <div class="order-name">${o.product_name}</div>
+        <div class="order-meta">
+          <span>🕐 ${o.created_at}</span>
+          ${coupon}
+        </div>
+        <div class="order-id" style="margin-top:.3rem">#${o.id.slice(0, 8).toUpperCase()}</div>
+      </div>
+        <div class="order-right">
+          <div class="order-amount ${isFree ? "free" : ""}">${isFree ? "FREE" : fmt(o.amount) + "đ"}</div>
+          ${badgeMap[st]}
+          ${dlBtn}
+        </div>
+      </div>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+        <a href="/profile" class="btn btn-outline" style="width:100%;justify-content:center"></a>
+      </div>`;
+          })
+          .join("");
+      }
+
+      function openModal(id) {
+        const o = allOrders.find((x) => x.id === id);
+        if (!o) return;
+        const st = getStatus(o);
+        const badgeMap = {
+          done: `<span class="badge done">✔ Đã duyệt</span>`,
+          pending: `<span class="badge pending">⏱ Chờ duyệt</span>`,
+          fail: `<span class="badge fail">✕ Từ chối</span>`,
+        };
+        document.getElementById("modalBody").innerHTML = `
+    <div class="detail-row"><span class="detail-label">Mã đơn hàng</span><span class="detail-value mono">#${o.id.slice(0, 8).toUpperCase()}</span></div>
+    <div class="detail-row"><span class="detail-label">Sản phẩm</span><span class="detail-value">${o.product_name}</span></div>
+    <div class="detail-row"><span class="detail-label">Ngày mua</span><span class="detail-value">${o.created_at}</span></div>
+    <div class="detail-row"><span class="detail-label">Số tiền</span><span class="detail-value accent mono">${o.amount === 0 ? "FREE" : fmt(o.amount) + "đ"}</span></div>
+    ${o.discount > 0 ? `<div class="detail-row"><span class="detail-label">Giảm giá (${o.coupon})</span><span class="detail-value green">-${fmt(o.discount)}đ</span></div>` : ""}
+    <div class="detail-row"><span class="detail-label">Trạng thái</span><span class="detail-value">${badgeMap[st]}</span></div>
+    ${o.file_url ? `<div class="detail-row"><span class="detail-label">File</span><span class="detail-value"><button class="btn-dl" onclick="secureDownload('${o.id}')">⬇ Tải file ngay</button></span></div>` : ""}
+    ${o.license_key ? `<div class="detail-row"><span class="detail-label">🔑 License Key</span><span class="detail-value"><code style="background:rgba(255,106,0,.12);border:1px solid rgba(255,106,0,.3);border-radius:6px;padding:.25rem .6rem;font-family:'Space Mono',monospace;font-size:.8rem;color:#ff9500;user-select:all;cursor:pointer" onclick="copyKey('${o.license_key}')" title="Click để sao chép">${o.license_key}</code> <button style="background:none;border:none;color:#ff9500;cursor:pointer;font-size:.85rem" onclick="copyKey('${o.license_key}')">📋</button></span></div>` : ""}
+    <div class="detail-row"><span class="detail-label">Hóa đơn</span><span class="detail-value"><button class="btn-invoice" onclick="showInvoice('${o.id}')">🧾 Xem hóa đơn</button></span></div>
+    <div class="detail-row"><span class="detail-label">Đánh giá</span><span class="detail-value"><button class="btn-review" onclick="openReview('${o.product_id}','${o.product_name}')">⭐ Viết đánh giá</button></span></div>
+  `;
+        document.getElementById("modalOverlay").classList.add("open");
+      }
+
+      function closeModal() {
+        document.getElementById("modalOverlay").classList.remove("open");
+      }
+
+      // Secure download
+      function copyKey(key) {
+        navigator.clipboard
+          .writeText(key)
+          .then(() => showToast("✅ Đã sao chép License Key!", "green"))
+          .catch(() => {
+            const el = document.createElement("textarea");
+            el.value = key;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand("copy");
+            document.body.removeChild(el);
+            showToast("✅ Đã sao chép!", "green");
+          });
+      }
+
+      async function secureDownload(orderId) {
+        const r = await fetch(`/api/download/${orderId}`);
+        const d = await r.json();
+        if (d.ok) window.open(d.download_url, "_blank");
+        else alert(d.msg || "Lỗi tải file");
+      }
+
+      // Invoice modal
+      async function showInvoice(orderId) {
+        const r = await fetch(`/api/invoice/${orderId}`);
+        const d = await r.json();
+        if (!d.ok) {
+          alert(d.msg);
+          return;
+        }
+        const inv = d.invoice;
+        const o = inv.order;
+        const overlay = document.createElement("div");
+        overlay.className = "modal-overlay active";
+        overlay.innerHTML = `<div class="modal">
+    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+    <h3>🧾 Hóa đơn mua hàng</h3>
+    <div class="invoice-box">
+      <div class="inv-header">
+        <div style="font-size:1.1rem;font-weight:700;color:var(--accent)">${inv.shop_name}</div>
+        ${inv.shop_phone ? `<div>${inv.shop_phone}</div>` : ""}
+        <div style="color:#888;margin-top:4px">Số HĐ: ${inv.invoice_no}</div>
+        <div style="color:#888">Ngày: ${inv.issued_at}</div>
+      </div>
+      <div class="inv-row"><span>Khách hàng:</span><span>${inv.user.username}</span></div>
+      <div class="inv-row"><span>Email:</span><span>${inv.user.email}</span></div>
+      <div style="margin:12px 0;border-top:1px solid rgba(255,150,0,.15)"></div>
+      <div class="inv-row"><span>Sản phẩm:</span><span>${o.product_name}</span></div>
+      <div class="inv-row"><span>Giá gốc:</span><span>${(o.original_price || o.amount).toLocaleString()}đ</span></div>
+      ${o.discount > 0 ? `<div class="inv-row"><span>Giảm giá (${o.coupon}):</span><span style="color:#10b981">-${o.discount.toLocaleString()}đ</span></div>` : ""}
+      <div class="inv-row total"><span>TỔNG THANH TOÁN:</span><span>${o.amount.toLocaleString()}đ</span></div>
+    </div>
+    <button class="btn-print" onclick="window.print()">🖨️ In hóa đơn</button>
+  </div>`;
+        document.body.appendChild(overlay);
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay) overlay.remove();
+        });
+      }
+
+      // Review modal
+      let reviewProductId = "";
+      function openReview(pid, name) {
+        reviewProductId = pid;
+        let selRating = 5;
+        const overlay = document.createElement("div");
+        overlay.className = "modal-overlay active";
+        overlay.innerHTML = `<div class="modal">
+    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+    <h3>⭐ Đánh giá: ${name}</h3>
+    <div class="stars" id="stars-row">
+      ${[1, 2, 3, 4, 5].map((i) => `<span class="star ${i <= 5 ? "active" : ""}" data-v="${i}" onclick="setRating(${i})">★</span>`).join("")}
+    </div>
+    <textarea id="review-content" placeholder="Chia sẻ trải nghiệm của bạn..."></textarea>
+    <div id="review-msg" style="margin-top:8px;font-size:.85rem;color:#ef4444"></div>
+    <button class="btn-submit-review" onclick="submitReview()">Gửi đánh giá</button>
+  </div>`;
+        document.body.appendChild(overlay);
+        overlay.addEventListener("click", (e) => {
+          if (e.target === overlay) overlay.remove();
+        });
+        window.setRating = function (v) {
+          selRating = v;
+          document.querySelectorAll(".star").forEach((s) => {
+            s.classList.toggle("active", parseInt(s.dataset.v) <= v);
+          });
+        };
+        window.submitReview = async function () {
+          const content = document
+            .getElementById("review-content")
+            .value.trim();
+          const r = await fetch("/api/reviews", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              product_id: reviewProductId,
+              rating: selRating,
+              content,
+            }),
+          });
+          const d = await r.json();
+          if (d.ok) {
+            overlay.remove();
+            alert("✅ Cảm ơn đánh giá của bạn!");
+          } else document.getElementById("review-msg").textContent = d.msg;
+        };
+      }
+
+      init();
+    </script>
+  </body>
+</html>
