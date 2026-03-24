@@ -18,12 +18,11 @@ ALLOWED_FILES  = {"zip","rar","7z","tar","gz","pdf","txt","md","json","exe","apk
 
 SMTP_HOST     = os.environ.get("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT     = int(os.environ.get("SMTP_PORT", 587))
-SMTP_USER     = os.environ.get("SMTP_USER", "giachuong08@gmail.com")
-SMTP_PASS     = os.environ.get("SMTP_PASS", "ktxq zybj aigw msfo")
-# print(SMTP_PASS)  # removed for security
-SMTP_SENDER   = os.environ.get("SMTP_SENDER", "xellox shop <giachuong08@gmail.com>")
+SMTP_USER     = os.environ.get("SMTP_USER", "")
+SMTP_PASS     = os.environ.get("SMTP_PASS", "")
+SMTP_SENDER   = os.environ.get("SMTP_SENDER", "")
 SHOP_NAME     = os.environ.get("SHOP_NAME", "xellox shop")
-SMTP_SENDER   = os.environ.get("SMTP_SENDER", "xellox shop <giachuong08@gmail.com>")
+SMTP_TIMEOUT  = int(os.environ.get("SMTP_TIMEOUT", 15))
 SUPPORT_EMAIL = os.environ.get("SUPPORT_EMAIL", "truong77kk@gmail.com")
 SUPPORT_PHONE = os.environ.get("SUPPORT_PHONE", "0967427517")
 SUPPORT_FB    = os.environ.get("SUPPORT_FB", "chưa có!")
@@ -121,9 +120,10 @@ def generate_otp():
     return "".join(random.choices(string.digits, k=6))
 
 def send_otp_email(to_email, username, otp_code):
-    logger.info(f"[SMTP] Attempting to send OTP to {to_email} (pass_set: {bool(SMTP_PASS)})")
-    if not SMTP_PASS:
-        logger.info(f"[DEV MODE] SMTP_PASS empty - LOGGING OTP for {to_email}: {otp_code}")
+    logger.info(f"[SMTP] Attempting to send OTP to {to_email} (user_set: {bool(SMTP_USER)}, pass_set: {bool(SMTP_PASS)})")
+    if not SMTP_USER or not SMTP_PASS:
+        logger.warning(f"[SMTP] SMTP_USER or SMTP_PASS not configured — set these env vars in Railway.")
+        logger.info(f"[DEV MODE] SMTP credentials missing - LOGGING OTP for {to_email}: {otp_code}")
         return True
     try:
         html_body = f"""<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
@@ -158,32 +158,36 @@ def send_otp_email(to_email, username, otp_code):
         try:
             # Try TLS port 587
             if SMTP_PORT == 587:
-                with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+                with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=SMTP_TIMEOUT) as server:
                     server.ehlo()
                     server.starttls()
+                    server.ehlo()
                     server.login(SMTP_USER, SMTP_PASS)
                     server.sendmail(SMTP_USER, [to_email], msg.as_string())
                 logger.info(f"[SMTP 587 ✅] Email sent to {to_email}")
                 return True
-            # Fallback SSL port 465  
+            # Fallback SSL port 465
             elif SMTP_PORT == 465:
-                with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT) as server:
+                with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=SMTP_TIMEOUT) as server:
                     server.login(SMTP_USER, SMTP_PASS)
                     server.sendmail(SMTP_USER, [to_email], msg.as_string())
                 logger.info(f"[SMTP 465 ✅] Email sent to {to_email}")
                 return True
             else:
                 raise ValueError(f"SMTP_PORT must be 587 (TLS) or 465 (SSL), got {SMTP_PORT}")
-        except smtplib.SMTPAuthenticationError:
-            logger.error(f"[SMTP AUTH ❌] {SMTP_USER} - Use Gmail APP PASSWORD: myaccount.google.com/apppasswords")
-            logger.error("RAILWAY: Generate new 16-char app password for 'Mail/XelloxShop'")
+        except smtplib.SMTPAuthenticationError as e:
+            logger.error(f"[SMTP AUTH ❌] {SMTP_USER}: {e}")
+            logger.error("RAILWAY: Set SMTP_USER and SMTP_PASS (Gmail App Password) env vars.")
             return False
-        except ConnectionRefusedError as e:
-            logger.error(f"[SMTP CONNECT ❌] Port {SMTP_PORT} blocked? RAILWAY: Try SMTP_PORT=465")
+        except ConnectionRefusedError:
+            logger.error(f"[SMTP CONNECT ❌] Connection refused on port {SMTP_PORT}. RAILWAY: Try SMTP_PORT=465")
+            return False
+        except TimeoutError as e:
+            logger.error(f"[SMTP TIMEOUT ❌] Connection to {SMTP_HOST}:{SMTP_PORT} timed out after {SMTP_TIMEOUT}s: {e}")
             return False
         except Exception as e:
             logger.error(f"[SMTP ERROR] {type(e).__name__}: {e}")
-            logger.error("Test: POST /api/test-smtp {'to_email':'your@email.com'}")
+            logger.error("Test: POST /api/test-smtp {\"to_email\":\"your@email.com\"}")
             return False
     except smtplib.SMTPAuthenticationError as e:
         logger.error(f"[SMTP AUTH ERROR] Invalid credentials: {e}. Use Gmail App Password!")
@@ -493,28 +497,38 @@ def test_smtp():
     msg["To"] = to_email
 
     
+    if not SMTP_USER or not SMTP_PASS:
+        logger.warning("[TEST SMTP] SMTP_USER or SMTP_PASS not set — configure env vars in Railway.")
+        return jsonify({"ok": False, "msg": "❌ SMTP_USER or SMTP_PASS not configured. Set these env vars in Railway."})
     try:
-        logger.info(f"[TEST] Try {SMTP_HOST}:{SMTP_PORT}")
+        logger.info(f"[TEST] Try {SMTP_HOST}:{SMTP_PORT} as {SMTP_USER} (timeout={SMTP_TIMEOUT}s)")
         if SMTP_PORT == 587:
-            server = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
+            server = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=SMTP_TIMEOUT)
             server.ehlo()
             server.starttls()
+            server.ehlo()
             server.login(SMTP_USER, SMTP_PASS)
             server.sendmail(SMTP_USER, [to_email], msg.as_string())
             server.quit()
             logger.info(f"[TEST 587 ✅] Sent to {to_email}")
         elif SMTP_PORT == 465:
-            server = smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT)
+            server = smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=SMTP_TIMEOUT)
             server.login(SMTP_USER, SMTP_PASS)
             server.sendmail(SMTP_USER, [to_email], msg.as_string())
             server.quit()
             logger.info(f"[TEST 465 ✅] Sent to {to_email}")
         else:
-            raise ValueError("SMTP_PORT=587 or 465")
-        return jsonify({"ok":True,"msg":f"✅ Sent to {to_email} via port {SMTP_PORT}"})
+            raise ValueError("SMTP_PORT must be 587 or 465")
+        return jsonify({"ok": True, "msg": f"✅ Sent to {to_email} via port {SMTP_PORT}"})
+    except smtplib.SMTPAuthenticationError as e:
+        logger.error(f"[TEST AUTH ❌] {SMTP_USER}: {e}")
+        return jsonify({"ok": False, "msg": f"❌ Auth failed for {SMTP_USER}. Use a Gmail App Password (not your account password)."})
+    except TimeoutError as e:
+        logger.error(f"[TEST TIMEOUT ❌] {SMTP_HOST}:{SMTP_PORT} timed out after {SMTP_TIMEOUT}s: {e}")
+        return jsonify({"ok": False, "msg": f"❌ Connection to {SMTP_HOST}:{SMTP_PORT} timed out. RAILWAY: Try SMTP_PORT=465"})
     except Exception as e:
         logger.error(f"[TEST ❌] Port {SMTP_PORT}: {type(e).__name__}: {e}")
-        return jsonify({"ok":False,"msg":f"❌ Error port {SMTP_PORT}: {str(e)}\\nRAILWAY: Use APP Password + try port 465"})
+        return jsonify({"ok": False, "msg": f"❌ Error port {SMTP_PORT}: {str(e)} — RAILWAY: Use App Password + try port 465"})
 
 @app.route("/api/register",methods=["POST"])
 @rate_limit("register",5,300)
