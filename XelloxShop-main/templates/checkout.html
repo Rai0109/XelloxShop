@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Thanh Toán · xelloxShop</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080c14;
+        --bg2: #0f1623;
+        --card: #111827;
+        --accent: #ff6a00;
+        --accent2: #ff9500;
+        --text: #f0f0f0;
+        --muted: #8899aa;
+        --border: rgba(255, 150, 0, 0.12);
+        --green: #10b981;
+        --red: #ef4444;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        min-height: 100vh;
+      }
+
+      /* HEADER */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 0.9rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(8, 12, 20, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        font-size: 1.3rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-decoration: none;
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: 0.2s;
+      }
+      .nav-back:hover {
+        color: var(--text);
+      }
+      .nav-back svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      /* MAIN LAYOUT */
+      main {
+        padding: 6rem 1.5rem 3rem;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      /* STEPS */
+      .steps {
+        display: flex;
+        gap: 0;
+        margin-bottom: 2.5rem;
+      }
+      .step {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        font-family: "Space Mono", monospace;
+      }
+      .step.active {
+        color: var(--accent);
+      }
+      .step.done {
+        color: var(--green);
+      }
+      .step-num {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1.5px solid currentColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .step-line {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+        margin: 0 0.5rem;
+      }
+      .step.done .step-num {
+        background: var(--green);
+        border-color: var(--green);
+        color: #fff;
+      }
+      .step.active .step-num {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      /* SELLER INFO */
+      .seller-box {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1rem 1.2rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+      }
+      .seller-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .seller-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+      .seller-verified {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.7rem;
+        color: var(--green);
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        padding: 0.15rem 0.6rem;
+        border-radius: 100px;
+        margin-left: 0.5rem;
+        font-family: "Space Mono", monospace;
+      }
+      .seller-subtitle {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 0.2rem;
+      }
+
+      /* TRUST BADGES */
+      .trust-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+        margin-bottom: 1.2rem;
+      }
+      .trust-item {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.7rem 0.5rem;
+        text-align: center;
+      }
+      .trust-icon {
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+      }
+      .trust-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: block;
+      }
+      .trust-sub {
+        font-size: 0.65rem;
+        color: var(--muted);
+      }
+
+      /* PRODUCT PREVIEW */
+      .product-preview {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        margin-bottom: 1.2rem;
+        overflow: hidden;
+      }
+      .product-img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        background: var(--bg2);
+      }
+      .product-img-placeholder {
+        width: 100%;
+        height: 140px;
+        background: linear-gradient(135deg, #1a2035, #0f1623);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+      }
+      .product-body {
+        padding: 1rem 1.2rem;
+      }
+      .product-cat {
+        font-size: 0.65rem;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+      }
+      .product-name {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+      }
+      .product-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      /* PAYMENT BOX */
+      .pay-box {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.2rem;
+        margin-bottom: 1.2rem;
+      }
+      .pay-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .pay-title svg {
+        width: 16px;
+        height: 16px;
+      }
+      .pay-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.85rem;
+      }
+      .pay-row:last-child {
+        border-bottom: none;
+      }
+      .pay-row.total {
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: var(--accent);
+        padding-top: 0.8rem;
+        border-top: 1px solid var(--border);
+      }
+      .pay-label {
+        color: var(--muted);
+      }
+      .pay-value {
+        font-family: "Space Mono", monospace;
+      }
+      .pay-value.green {
+        color: var(--green);
+      }
+      .pay-value.red {
+        color: var(--red);
+      }
+
+      /* COUPON */
+      .coupon-row {
+        display: flex;
+        gap: 0.6rem;
+        margin-bottom: 1.2rem;
+      }
+      .coupon-input {
+        flex: 1;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.7rem 1rem;
+        color: var(--text);
+        font-family: "Space Mono", monospace;
+        font-size: 0.85rem;
+        outline: none;
+        transition: 0.2s;
+        text-transform: uppercase;
+      }
+      .coupon-input:focus {
+        border-color: var(--accent);
+      }
+      .coupon-input::placeholder {
+        color: var(--muted);
+        text-transform: none;
+      }
+      .btn-apply {
+        padding: 0.7rem 1.2rem;
+        background: transparent;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.82rem;
+        transition: 0.2s;
+        white-space: nowrap;
+      }
+      .btn-apply:hover {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      /* BALANCE */
+      .balance-box {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.9rem 1.2rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .balance-label {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .balance-value {
+        font-family: "Space Mono", monospace;
+        font-weight: 700;
+        font-size: 1rem;
+      }
+      .balance-after {
+        font-size: 0.75rem;
+        margin-top: 0.15rem;
+      }
+      .balance-ok {
+        color: var(--green);
+      }
+      .balance-err {
+        color: var(--red);
+      }
+      .balance-check {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+      }
+      .balance-check.ok {
+        background: rgba(16, 185, 129, 0.15);
+        border: 1.5px solid var(--green);
+      }
+      .balance-check.err {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1.5px solid var(--red);
+      }
+
+      /* CONFIRM BTN */
+      .btn-confirm {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        transition: 0.2s;
+        letter-spacing: 0.5px;
+      }
+      .btn-confirm:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+      }
+      .btn-confirm:active {
+        transform: translateY(0);
+      }
+      .btn-confirm:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .confirm-note {
+        text-align: center;
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-top: 0.8rem;
+        line-height: 1.6;
+      }
+
+      /* FEATURES */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+      }
+      .feat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-align: center;
+      }
+      .feat-icon {
+        font-size: 1.1rem;
+      }
+
+      /* SUCCESS OVERLAY */
+      .success-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(8, 12, 20, 0.97);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .success-card {
+        background: var(--card);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-radius: 20px;
+        padding: 2.5rem 2rem;
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+      }
+      .success-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .success-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+      }
+      .success-sub {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
+      }
+      .success-id {
+        font-family: "Space Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--muted);
+        background: var(--bg2);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        word-break: break-all;
+      }
+      .btn-download {
+        display: block;
+        padding: 0.8rem;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-decoration: none;
+        margin-bottom: 0.8rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-download:hover {
+        filter: brightness(1.1);
+      }
+      .btn-back-home {
+        display: block;
+        padding: 0.8rem;
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-family: "Syne", sans-serif;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-back-home:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* LOADING SPINNER */
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2.5px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* TOAST */
+      .toast {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        background: var(--green);
+        color: #fff;
+        padding: 0.75rem 1.4rem;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        z-index: 9999;
+        transform: translateY(80px);
+        opacity: 0;
+        transition: 0.3s;
+        max-width: 280px;
+      }
+      .toast.err {
+        background: var(--red);
+      }
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* SKELETON */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          var(--card) 25%,
+          rgba(255, 255, 255, 0.04) 50%,
+          var(--card) 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 8px;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      /* Not logged in */
+      .auth-wall {
+        text-align: center;
+        padding: 3rem 1rem;
+      }
+      .auth-wall h2 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin-bottom: 0.7rem;
+      }
+      .auth-wall p {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+      }
+      .btn-login {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="logo">xelloxshop</a>
+      <a href="/" class="nav-back">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Quay lại
+      </a>
+    </nav>
+
+    <main>
+      <div id="authWall" class="auth-wall" style="display: none">
+        <div style="font-size: 3rem; margin-bottom: 1rem">🔐</div>
+        <h2>Vui lòng đăng nhập</h2>
+        <p>Bạn cần đăng nhập để tiếp tục mua hàng</p>
+        <a href="/login" class="btn-login">Đăng nhập ngay</a>
+      </div>
+
+      <div id="checkoutContent" style="display: none">
+        <!-- Steps -->
+        <div class="steps">
+          <div class="step done">
+            <div class="step-num">✓</div>
+            <span>Giỏ hàng</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step active">
+            <div class="step-num">2</div>
+            <span>Thanh toán</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <span>Hoàn tất</span>
+          </div>
+        </div>
+
+        <!-- Seller -->
+        <div class="seller-box">
+          <div class="seller-avatar">A</div>
+          <div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.2rem;
+              "
+            >
+              <span class="seller-name">Admin VIP</span>
+              <span class="seller-verified">✓ Đã xác minh</span>
+            </div>
+            <div class="seller-subtitle">
+              Người bán uy tín · Giao hàng tức thì
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="trust-row">
+          <div class="trust-item">
+            <div class="trust-icon">🛡️</div>
+            <span class="trust-label">Bảo mật</span>
+            <span class="trust-sub">An toàn 100%</span>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">⚡</div>
+            <span class="trust-label">Nhanh chóng</span>
+            <span class="trust-sub">Giao ngay</span>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">🎁</div>
+            <span class="trust-label">Ưu đãi</span>
+            <span class="trust-sub">Giá tốt</span>
+          </div>
+        </div>
+
+        <!-- Product preview -->
+        <div class="product-preview">
+          <div
+            id="prodImg"
+            class="product-img-placeholder skeleton"
+            style="font-size: 0"
+          ></div>
+          <div class="product-body">
+            <div class="product-cat" id="prodCat">Đang tải...</div>
+            <div
+              class="product-name"
+              id="prodName"
+              style="min-height: 1.2em"
+            ></div>
+            <div class="product-desc" id="prodDesc"></div>
+          </div>
+        </div>
+
+        <!-- Payment breakdown -->
+        <div class="pay-box">
+          <div class="pay-title">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="1" y="4" width="22" height="16" rx="2" />
+              <line x1="1" y1="10" x2="23" y2="10" />
+            </svg>
+            Thanh toán
+          </div>
+          <div class="pay-row">
+            <span class="pay-label">Giá sản phẩm</span>
+            <span class="pay-value" id="payPrice">0 xu</span>
+          </div>
+          <div class="pay-row" id="discountRow" style="display: none">
+            <span class="pay-label">Giảm giá</span>
+            <span class="pay-value green" id="payDiscount"></span>
+          </div>
+          <div class="pay-row total">
+            <span>Tổng thanh toán</span>
+            <span id="payTotal">0 xu</span>
+          </div>
+        </div>
+
+        <!-- Coupon -->
+        <div class="coupon-row">
+          <input
+            class="coupon-input"
+            id="couponInput"
+            type="text"
+            placeholder="Nhập mã giảm giá (VD: xellox10K)"
+            maxlength="20"
+          />
+          <button class="btn-apply" onclick="applyCoupon()">ÁP DỤNG</button>
+        </div>
+
+        <!-- Balance -->
+        <div class="balance-box">
+          <div>
+            <div class="balance-label">Số dư ví của bạn</div>
+            <div class="balance-value" id="balanceDisplay">0 xu</div>
+            <div class="balance-after" id="balanceAfter"></div>
+          </div>
+          <div class="balance-check ok" id="balanceCheck">✓</div>
+        </div>
+
+        <!-- Confirm btn -->
+        <button class="btn-confirm" id="btnConfirm" onclick="confirmPurchase()">
+          🛒 XÁC NHẬN MUA HÀNG
+        </button>
+        <p class="confirm-note">
+          Bằng việc nhấn "Xác nhận mua hàng", bạn đồng ý với điều khoản sử dụng
+          của chúng tôi. Thông tin sẽ được gửi vào mục "Đơn hàng của tôi".
+        </p>
+
+        <!-- Features -->
+        <div class="features">
+          <div class="feat">
+            <span class="feat-icon">🕐</span>Giao hàng tức thì sau thanh toán
+          </div>
+          <div class="feat">
+            <span class="feat-icon">🔄</span>Đảm bảo hoàn tiền nếu có vấn đề
+          </div>
+          <div class="feat"><span class="feat-icon">💬</span>Hỗ trợ 24/7</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Success overlay -->
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-card">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">Thanh toán thành công!</div>
+        <div class="success-sub" id="successSub">
+          Sản phẩm đã được giao vào tài khoản của bạn.
+        </div>
+        <div class="success-id" id="successId"></div>
+        <a href="#" id="downloadBtn" class="btn-download" style="display: none"
+          >⬇️ Tải xuống ngay</a
+        >
+        <a href="/" class="btn-back-home">← Quay về trang chủ</a>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      let productData = null;
+      let userData = null;
+      let discountAmount = 0;
+
+      const params = new URLSearchParams(location.search);
+      const pid = params.get("product");
+
+      function fmt(n) {
+        if (!n || n === 0) return "0 xu";
+        return n.toLocaleString("vi") + "đ";
+      }
+
+      function fmtXu(n) {
+        return (n || 0).toLocaleString("vi") + " xu";
+      }
+
+      function showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast" + (type === "error" ? " err" : "") + " show";
+        setTimeout(() => t.classList.remove("show"), 3000);
+      }
+
+      async function init() {
+        // Check login
+        const meRes = await fetch("/api/me");
+        const me = await meRes.json();
+        if (!me.ok) {
+          document.getElementById("authWall").style.display = "block";
+          return;
+        }
+        userData = me;
+        document.getElementById("checkoutContent").style.display = "block";
+
+        if (!pid) {
+          showToast("Không tìm thấy sản phẩm", "error");
+          setTimeout(() => (location.href = "/"), 2000);
+          return;
+        }
+
+        // Load product
+        const pRes = await fetch("/api/products/" + pid);
+        const p = await pRes.json();
+        if (p.error) {
+          showToast("Sản phẩm không tồn tại", "error");
+          setTimeout(() => (location.href = "/"), 2000);
+          return;
+        }
+        productData = p;
+        renderProduct();
+        renderBalance();
+      }
+
+      function renderProduct() {
+        const p = productData;
+        const price = p.sale_price > 0 ? p.sale_price : p.price;
+
+        // Image
+        const imgEl = document.getElementById("prodImg");
+        imgEl.className = "product-img-placeholder";
+        imgEl.style.fontSize = "3rem";
+        if (p.image) {
+          const img = new Image();
+          img.onload = () => {
+            imgEl.style.backgroundImage = `url(${p.image})`;
+            imgEl.style.backgroundSize = "cover";
+            imgEl.style.backgroundPosition = "center";
+            imgEl.style.fontSize = "0";
+          };
+          img.src = p.image;
+        } else {
+          imgEl.textContent = p.category.includes("Zalo")
+            ? "💬"
+            : p.category.includes("Facebook")
+              ? "📘"
+              : p.category.includes("Discord")
+                ? "🎮"
+                : "⚡";
+        }
+
+        document.getElementById("prodCat").textContent =
+          p.category + " · " + (p.type === "rent" ? "Cho thuê" : "Bán file");
+        document.getElementById("prodName").textContent = p.name;
+        document.getElementById("prodDesc").textContent = p.description;
+
+        updatePrices();
+      }
+
+      function updatePrices() {
+        if (!productData) return;
+        const p = productData;
+        const base = p.sale_price > 0 ? p.sale_price : p.price;
+        const total = Math.max(0, base - discountAmount);
+
+        document.getElementById("payPrice").textContent =
+          base === 0 ? "FREE" : fmt(base);
+        document.getElementById("payTotal").textContent =
+          total === 0 ? "FREE" : fmt(total);
+
+        if (discountAmount > 0) {
+          document.getElementById("discountRow").style.display = "flex";
+          document.getElementById("payDiscount").textContent =
+            "-" + fmt(discountAmount);
+        } else {
+          document.getElementById("discountRow").style.display = "none";
+        }
+
+        renderBalance();
+      }
+
+      function renderBalance() {
+        if (!userData) return;
+        const p = productData;
+        const base = p ? (p.sale_price > 0 ? p.sale_price : p.price) : 0;
+        const total = Math.max(0, base - discountAmount);
+        const after = userData.balance - total;
+        const ok = after >= 0;
+
+        document.getElementById("balanceDisplay").textContent = fmtXu(
+          userData.balance,
+        );
+        document.getElementById("balanceAfter").className =
+          "balance-after " + (ok ? "balance-ok" : "balance-err");
+        document.getElementById("balanceAfter").textContent = ok
+          ? "✓ Còn lại sau thanh toán: " + fmtXu(after)
+          : "✗ Không đủ số dư";
+        document.getElementById("balanceCheck").className =
+          "balance-check " + (ok ? "ok" : "err");
+        document.getElementById("balanceCheck").textContent = ok ? "✓" : "✗";
+      }
+
+      async function applyCoupon() {
+        const code = document
+          .getElementById("couponInput")
+          .value.trim()
+          .toUpperCase();
+        if (!code) {
+          showToast("Nhập mã giảm giá", "error");
+          return;
+        }
+
+        if (!productData) {
+          return;
+        }
+        const base =
+          productData.sale_price > 0
+            ? productData.sale_price
+            : productData.price;
+
+        const r = await fetch('/api/coupon/check', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({code: code, price: base})
+        });
+        const d = await r.json();
+        if (d.ok) {
+          discountAmount = d.discount;
+          showToast(d.description || "✅ Áp dụng mã thành công!", "success");
+          updatePrices();
+        } else {
+          discountAmount = 0;
+          showToast(d.msg || "Mã không hợp lệ", "error");
+          updatePrices();
+        }
+      }
+
+      async function confirmPurchase() {
+        if (!productData || !userData) return;
+
+        const base =
+          productData.sale_price > 0
+            ? productData.sale_price
+            : productData.price;
+        const total = Math.max(0, base - discountAmount);
+
+        if (userData.balance < total) {
+          showToast("Số dư không đủ. Vui lòng nạp thêm xu.", "error");
+          return;
+        }
+
+        const btn = document.getElementById("btnConfirm");
+        btn.disabled = true;
+        btn.innerHTML = '<div class="spinner"></div> Đang xử lý...';
+
+        try {
+          const res = await fetch("/api/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              product_id: pid,
+              coupon: document.getElementById("couponInput").value.trim(),
+            }),
+          });
+          const data = await res.json();
+
+          if (data.ok) {
+            // Show success
+            const overlay = document.getElementById("successOverlay");
+            document.getElementById("successId").textContent =
+              "Mã đơn hàng: " + data.order.id;
+            document.getElementById("successSub").textContent =
+              'Cảm ơn bạn đã mua "' + data.order.product_name + '"!';
+
+            if (data.file_url) {
+              const dl = document.getElementById("downloadBtn");
+              dl.href = data.file_url;
+              dl.style.display = "block";
+            }
+
+            overlay.style.display = "flex";
+            // Update local balance
+            userData.balance -= data.order.amount;
+          } else {
+            showToast(data.msg || "Lỗi thanh toán", "error");
+            btn.disabled = false;
+            btn.innerHTML = "🛒 XÁC NHẬN MUA HÀNG";
+          }
+        } catch (e) {
+          showToast("Lỗi kết nối, thử lại sau", "error");
+          btn.disabled = false;
+          btn.innerHTML = "🛒 XÁC NHẬN MUA HÀNG";
+        }
+      }
+
+      init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1672 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xelloxx - Marketplace Bot & Source Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080c14;
+        --bg2: #0d1525;
+        --card: #111827;
+        --border: rgba(255, 150, 0, 0.15);
+        --accent: #ff6a00;
+        --accent2: #ff9500;
+        --text: #e8eaf0;
+        --muted: #8892a4;
+        --glow: rgba(255, 106, 0, 0.3);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(8, 12, 20, 0.9);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+      }
+      .logo {
+        font-size: 1.6rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+      .logo span {
+        color: var(--accent);
+      }
+      .nav-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+      }
+      .btn {
+        padding: 0.55rem 1.3rem;
+        border-radius: 8px;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s;
+        text-decoration: none;
+        font-size: 0.85rem;
+        border: none;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--accent2);
+        transform: translateY(-1px);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      .btn-outline:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .hamburger span {
+        width: 24px;
+        height: 2px;
+        background: var(--text);
+        transition: 0.3s;
+      }
+
+      /* HERO */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 6rem 2rem 4rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 0%,
+          rgba(255, 106, 0, 0.12) 0%,
+          transparent 70%
+        );
+      }
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 50px 50px;
+        mask-image: radial-gradient(
+          ellipse 80% 60% at center,
+          black 30%,
+          transparent 80%
+        );
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.4rem 1.2rem;
+        background: rgba(255, 106, 0, 0.1);
+        border: 1px solid rgba(255, 106, 0, 0.3);
+        border-radius: 100px;
+        font-size: 0.8rem;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+        margin-bottom: 1.5rem;
+        letter-spacing: 1px;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 7vw, 5.5rem);
+        font-weight: 800;
+        line-height: 1.05;
+        margin-bottom: 1.5rem;
+        letter-spacing: -2px;
+      }
+      .hero h1 .hl {
+        color: var(--accent);
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 1.1rem;
+        max-width: 520px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.7;
+      }
+      .hero-btns {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .stats-row {
+        display: flex;
+        gap: 3rem;
+        justify-content: center;
+        margin-top: 4rem;
+        flex-wrap: wrap;
+      }
+      .stat {
+        text-align: center;
+      }
+      .stat-num {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+      }
+      .stat-label {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.2rem;
+      }
+
+      /* FLASH SALE */
+      .flash-sale {
+        padding: 3rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+      .section-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .fire {
+        font-size: 1.3rem;
+      }
+      .countdown {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        margin-left: auto;
+      }
+      .cd-box {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.4rem 0.7rem;
+        text-align: center;
+        min-width: 50px;
+      }
+      .cd-num {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+      }
+      .cd-label {
+        font-size: 0.6rem;
+        color: var(--muted);
+      }
+      .cd-sep {
+        color: var(--accent);
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+
+      /* FILTERS */
+      .filters {
+        padding: 2rem 2rem 0;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .filter-row {
+        display: flex;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .search-box {
+        display: flex;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        flex: 1;
+        min-width: 200px;
+        max-width: 400px;
+      }
+      .search-box input {
+        background: none;
+        border: none;
+        padding: 0.7rem 1rem;
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        font-size: 0.9rem;
+        flex: 1;
+        outline: none;
+      }
+      .search-box button {
+        padding: 0.7rem 1rem;
+        background: var(--accent);
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+      .filter-btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        transition: 0.2s;
+      }
+      .filter-btn.active,
+      .filter-btn:hover {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+      }
+
+      /* PRODUCTS GRID */
+      .products-section {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 1.5rem;
+      }
+      .product-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: 0.3s;
+        cursor: pointer;
+        position: relative;
+      }
+      .product-card:hover {
+        border-color: rgba(255, 106, 0, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+      .card-img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        display: block;
+      }
+      .card-img-placeholder {
+        width: 100%;
+        height: 160px;
+        background: linear-gradient(135deg, #1a2035, #0d1525);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+      }
+      .card-badge {
+        position: absolute;
+        top: 0.8rem;
+        right: 0.8rem;
+        padding: 0.25rem 0.7rem;
+        border-radius: 100px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        font-family: "Space Mono", monospace;
+      }
+      .badge-sale {
+        background: var(--accent);
+        color: #fff;
+      }
+      .badge-free {
+        background: #10b981;
+        color: #fff;
+      }
+      .card-body {
+        padding: 1.2rem;
+      }
+      .card-cat {
+        font-size: 0.7rem;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+      }
+      .card-name {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .card-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 1rem;
+      }
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .price-box {
+      }
+      .price-current {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+      }
+      .price-old {
+        font-size: 0.75rem;
+        color: var(--muted);
+        text-decoration: line-through;
+        font-family: "Space Mono", monospace;
+      }
+      .btn-buy {
+        padding: 0.45rem 1rem;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.2s;
+      }
+      .btn-buy:hover {
+        background: var(--accent2);
+        transform: scale(1.05);
+      }
+      .card-type {
+        display: inline-block;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.65rem;
+        font-family: "Space Mono", monospace;
+        margin-bottom: 0.5rem;
+      }
+      .type-rent {
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+      }
+      .type-sell {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+
+      /* FOOTER */
+      footer {
+        padding: 3rem 2rem;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      footer .logo-footer {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+      footer .logo-footer span {
+        color: var(--accent);
+      }
+
+      /* MODAL */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s;
+      }
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        width: 100%;
+        max-width: 560px;
+        overflow: hidden;
+        transform: translateY(20px);
+        transition: 0.3s;
+      }
+      .modal-overlay.open .modal {
+        transform: translateY(0);
+      }
+      .modal-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+      .modal-body {
+        padding: 1.5rem;
+      }
+      .modal-cat {
+        font-size: 0.7rem;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+      .modal-title {
+        font-size: 1.4rem;
+        font-weight: 800;
+        margin-bottom: 0.8rem;
+      }
+      .modal-desc {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.7;
+        margin-bottom: 1.2rem;
+      }
+      .modal-price {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--accent);
+        font-family: "Space Mono", monospace;
+        margin-bottom: 1rem;
+      }
+      .modal-btns {
+        display: flex;
+        gap: 0.8rem;
+      }
+      .modal-close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+        color: var(--text);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal {
+        position: relative;
+      }
+
+      /* TOAST */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: #10b981;
+        color: #fff;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        z-index: 9999;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          position: fixed;
+          top: 64px;
+          left: 0;
+          right: 0;
+          background: var(--bg2);
+          padding: 1.5rem;
+          flex-direction: column;
+          border-bottom: 1px solid var(--border);
+        }
+        .nav-links.open {
+          display: flex;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+        .stats-row {
+          gap: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">Xell<span>o</span>xx</div>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#">Trang chủ</a>
+        <a href="#products">Sản phẩm</a>
+        <a href="#" onclick="filterType('sell')">Mua File</a>
+        <a
+          href="/notifications"
+          class="nav-link"
+          id="navNotifications"
+          style="display: none; position: relative"
+        >
+          🔔
+          <span class="badge-count" id="navNotifCount" style="display: none"
+            >0</span
+          >
+        </a>
+
+        <a
+          href="/topup"
+          class="btn btn-outline"
+          style="color: var(--accent); border-color: rgba(255, 106, 0, 0.4)"
+        >
+          💰 Nạp tiền
+        </a>
+
+        <a
+          href="/login"
+          class="btn btn-primary"
+          id="navLoginBtn"
+          style="display: none"
+        >
+          Đăng nhập
+        </a>
+
+        <!-- MENU USER -->
+        <div id="navUserMenu" style="display: none; position: relative">
+          <button
+            onclick="toggleUserMenu()"
+            style="
+              background: rgba(255, 106, 0, 0.15);
+              border: 1px solid rgba(255, 106, 0, 0.4);
+              color: var(--accent);
+              padding: 0.45rem 1rem;
+              border-radius: 8px;
+              font-family: &quot;Syne&quot;, sans-serif;
+              font-weight: 700;
+              font-size: 0.9rem;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              gap: 0.4rem;
+            "
+          >
+            👤 <span id="navUsername"></span> 💰 Số dư:
+            <span id="navBalance">0 xu</span> ▾
+          </button>
+
+          <div
+            id="userDropdown"
+            style="
+              display: none;
+              position: absolute;
+              right: 0;
+              top: 110%;
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 0.6rem;
+              min-width: 200px;
+              z-index: 999;
+            "
+          >
+            <!-- THÔNG TIN TÀI KHOẢN -->
+            <div
+              style="
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+                color: var(--muted);
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 6px;
+              "
+            >
+              👤 <b id="dropdownUsername"></b><br />
+              💰 Số dư: <span id="dropdownBalance">0 xu</span>
+            </div>
+
+            <a
+              href="/profile"
+              style="
+                display: block;
+                padding: 0.5rem 1rem;
+                color: white;
+                text-decoration: none;
+              "
+            >
+              👤 Hồ sơ của tôi
+            </a>
+
+            <a
+              href="/orders"
+              style="
+                display: block;
+                padding: 0.5rem 1rem;
+                color: white;
+                text-decoration: none;
+              "
+            >
+              📦 File đã mua
+            </a>
+
+            <a
+              href="/topup"
+              style="
+                display: block;
+                padding: 0.5rem 1rem;
+                color: white;
+                text-decoration: none;
+              "
+            >
+              💰 Nạp tiền
+            </a>
+            <a
+              href="/notifications"
+              style="
+                display: block;
+                padding: 0.5rem 1rem;
+                color: white;
+                text-decoration: none;
+              "
+            >
+              🔔 Thông báo
+            </a>
+
+            <a
+              href="/logout"
+              style="
+                display: block;
+                padding: 0.5rem 1rem;
+                color: #ff4d4d;
+                text-decoration: none;
+              "
+            >
+              🚪 Đăng xuất
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div style="position: relative; z-index: 1">
+        <div class="badge">⚡ #1 MARKETPLACE BOT VIỆT NAM</div>
+        <h1>
+          KHÁM PHÁ<br /><span class="hl">BOT & SOURCE</span><br />CHẤT LƯỢNG CAO
+        </h1>
+        <p>
+          Hàng trăm bot, API, source code từ Zalo, Facebook đến Discord. Tiết
+          kiệm thời gian với sản phẩm sẵn sàng sử dụng.
+        </p>
+        <div class="hero-btns">
+          <a href="#products" class="btn btn-primary">🛒 Mua ngay</a>
+        </div>
+        <div class="stats-row" id="statsRow">
+          <div class="stat">
+            <div class="stat-num" id="sProducts">--</div>
+            <div class="stat-label">Sản phẩm</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num" id="sUsers">--</div>
+            <div class="stat-label">Người dùng</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num" id="sOrders">--</div>
+            <div class="stat-label">Đơn hàng</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <div class="filter-row">
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Tìm kiếm sản phẩm..."
+            onkeyup="searchProducts()"
+          />
+          <button onclick="searchProducts()">🔍</button>
+        </div>
+        <button
+          class="filter-btn active"
+          id="fAll"
+          onclick="filterCat('', this)"
+        >
+          Tất cả
+        </button>
+        <button class="filter-btn" onclick="filterType('sell')">🛒 Mua</button>
+        <div id="catFilters"></div>
+      </div>
+    </div>
+
+    <!-- FLASH SALE -->
+    <div class="flash-sale" id="flashSale">
+      <div class="section-header">
+        <div class="section-title">
+          ⚡ Flash Sale <span class="fire">🔥</span>
+        </div>
+        <div class="countdown">
+          <div class="cd-box">
+            <div class="cd-num" id="cdH">00</div>
+            <div class="cd-label">Giờ</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="cd-box">
+            <div class="cd-num" id="cdM">00</div>
+            <div class="cd-label">Phút</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="cd-box">
+            <div class="cd-num" id="cdS">00</div>
+            <div class="cd-label">Giây</div>
+          </div>
+        </div>
+      </div>
+      <div class="products-grid" id="saleGrid"></div>
+    </div>
+
+    <!-- BEST SELLERS -->
+    <div class="products-section" id="bestSellersSection" style="display: none">
+      <div class="section-header">
+        <div class="section-title">🏆 Sản phẩm bán chạy</div>
+      </div>
+      <div class="products-grid" id="bestSellersGrid"></div>
+    </div>
+
+    <!-- ALL PRODUCTS -->
+    <div class="products-section" id="products">
+      <div class="section-header">
+        <div class="section-title">📦 Tất cả sản phẩm</div>
+      </div>
+      <div class="products-grid" id="productGrid"></div>
+    </div>
+
+    <!-- ⭐ ĐÁNH GIÁ NỔI BẬT -->
+    <section class="products-section" style="padding: 3rem 2rem 2rem">
+      <div class="section-header">
+        <h2 class="section-title">⭐ Đánh giá từ khách hàng</h2>
+      </div>
+      <div
+        id="reviewsCarousel"
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: 1.5rem;
+        "
+      >
+        <!-- Dynamic reviews loaded via JS -->
+      </div>
+    </section>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+      <div class="modal" id="modal">
+        <button class="modal-close-btn" onclick="closeModal()">✕</button>
+        <img class="modal-img" id="modalImg" src="" alt="" />
+        <div class="modal-body">
+          <div class="modal-cat" id="modalCat"></div>
+          <div class="modal-title" id="modalTitle"></div>
+          <div class="modal-desc" id="modalDesc"></div>
+          <div class="modal-price" id="modalPrice"></div>
+          <div class="modal-btns">
+            <button class="btn btn-primary" style="flex: 1" onclick="buyNow()">
+              🛒 Mua ngay
+            </button>
+            <button class="btn btn-outline" onclick="closeModal()">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <footer>
+      <div class="logo-footer">Xell<span>o</span>xx</div>
+      <p>Marketplace Bot & Source Code hàng đầu Việt Nam</p>
+      <p style="margin-top: 0.5rem">© 2024 Xelloxx. All rights reserved.</p>
+    </footer>
+
+    <!-- SINGLE CHATBOT BUTTON & FRAME -->
+    <button
+      id="chat-bot-btn"
+      onclick="window.location.href = '/chatbot'"
+      title="💬 Chatbot"
+      style="
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #ff6a00, #ff9500);
+        border-radius: 50%;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        box-shadow: 0 8px 32px rgba(255, 106, 0, 0.4);
+        transition: all 0.3s ease;
+      "
+      onmouseover="
+        this.style.transform = 'scale(1.05)';
+        this.innerHTML = '✏️';
+      "
+      onmouseout="
+        this.style.transform = 'scale(1)';
+        this.innerHTML = '💬';
+      "
+    >
+      💬
+    </button>
+
+    <!-- Modern Chatbot Frame -->
+    <div id="chatbot-frame" class="chatbot-frame-hidden">
+      <div class="chat-frame-header">
+        <span>🤖 Chatbot Hỗ trợ</span>
+        <button onclick="toggleChatbotFrame()" class="chat-frame-close">
+          ✕
+        </button>
+      </div>
+      <div id="chat-frame-messages"></div>
+      <div class="chat-frame-input">
+        <input id="chat-frame-text" placeholder="Gõ tin nhắn..." />
+        <button id="chat-send-btn" onclick="sendFrameMsg()">📤</button>
+      </div>
+    </div>
+
+    <style>
+      /* SINGLE CHATBOT - Clean Modern Frame */
+      .chatbot-frame-hidden {
+        display: none !important;
+      }
+
+      #chatbot-frame {
+        position: fixed;
+        bottom: 4.5rem;
+        right: 1.5rem;
+        width: 380px;
+        max-width: 90vw;
+        height: 480px;
+        max-height: 70vh;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        font-family: "Syne", sans-serif;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .chat-frame-header {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: white;
+        padding: 1rem 1.2rem;
+        border-radius: 16px 16px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+
+      .chat-frame-close {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #chat-frame-messages {
+        flex: 1;
+        padding: 1.2rem;
+        overflow-y: auto;
+        background: var(--bg);
+      }
+
+      .chat-msg {
+        margin-bottom: 1.2rem;
+        animation: msgSlideIn 0.3s ease;
+      }
+
+      .chat-msg.bot {
+        text-align: right;
+      }
+
+      .msg-bubble {
+        display: inline-block;
+        max-width: 85%;
+        padding: 0.9rem 1.1rem;
+        border-radius: 20px;
+        font-size: 0.88rem;
+        line-height: 1.45;
+        word-break: break-word;
+      }
+
+      .msg-bot {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-bottom-right-radius: 6px;
+      }
+
+      .msg-user {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: white;
+        border-bottom-left-radius: 6px;
+        margin-left: auto;
+      }
+
+      .chat-frame-input {
+        padding: 1.2rem;
+        display: flex;
+        gap: 0.7rem;
+        border-top: 1px solid var(--border);
+        background: var(--bg2);
+      }
+
+      #chat-frame-text {
+        flex: 1;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 25px;
+        color: var(--text);
+        padding: 0.9rem 1.2rem;
+        font-family: inherit;
+        font-size: 0.92rem;
+        outline: none;
+        resize: none;
+        max-height: 100px;
+      }
+
+      #chat-frame-text:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15);
+      }
+
+      #chat-send-btn {
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: white;
+        cursor: pointer;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+        transition: transform 0.2s;
+      }
+
+      #chat-send-btn:hover:not(:disabled) {
+        transform: scale(1.05);
+      }
+
+      #chat-send-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      @keyframes msgSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 480px) {
+        #chatbot-frame {
+          right: 1rem;
+          left: 1rem;
+          bottom: 1rem;
+          height: calc(100vh - 2rem);
+        }
+        #chat-bot-btn {
+          bottom: 1rem;
+          right: 1rem;
+        }
+      }
+
+      /* Custom scrollbar */
+      #chat-frame-messages::-webkit-scrollbar {
+        width: 4px;
+      }
+      #chat-frame-messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      #chat-frame-messages::-webkit-scrollbar-thumb {
+        background: rgba(255, 106, 0, 0.4);
+        border-radius: 2px;
+      }
+    </style>
+
+    <script>
+      let chatFrameOpen = false;
+      async function toggleChatbotFrame() {
+        const frame = document.getElementById('chatbot-frame');
+        chatFrameOpen = !chatFrameOpen;
+        frame.classList.toggle('chatbot-frame-hidden');
+        if (chatFrameOpen) initFrameChat();
+      }
+      async function initFrameChat() {
+        try {
+          const msgsEl = document.getElementById('chat-frame-messages');
+          const uRes = await fetch('/api/me');
+          const user = await uRes.json();
+          if (!user.ok) {
+            msgsEl.innerHTML = '<div class="chat-msg bot"><div class="msg-bubble msg-bot">👤 <a href="/login" style="color:var(--accent)">Đăng nhập</a> để chat</div></div>';
+            return;
+          }
+          const histRes = await fetch('/api/chat-history');
+          const history = await histRes.json();
+          msgsEl.innerHTML = history.map(m => frameMsgHTML(m.is_bot, m.content, m.timestamp)).join('');
+          msgsEl.scrollTop = msgsEl.scrollHeight;
+        } catch(e) { console.error(e); }
+      }
+      function frameMsgHTML(isBot, content, ts = new Date().toLocaleString('vi-VN', {timeZone: 'Asia/Ho_Chi_Minh'})) {
+        const cls = isBot ? 'bot msg-bot' : 'user msg-user';
+        return `<div class="chat-msg ${cls}"><div class="msg-bubble">${content.replace(/\\n/g,'<br>')}</div></div>`;
+      }
+      async function sendFrameMsg() {
+        const input = document.getElementById('chat-frame-text');
+        const msg = input.value.trim();
+        if (!msg || Date.now() - (window.lastFrameMsg || 0) < 1200) return;
+        input.value = '';
+        window.lastFrameMsg = Date.now();
+        const msgsEl = document.getElementById('chat-frame-messages');
+        msgsEl.insertAdjacentHTML('beforeend', frameMsgHTML(false, msg));
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        const typing = document.createElement('div');
+        typing.className = 'chat-msg bot';
+        typing.innerHTML = '<div class="msg-bubble msg-bot">Bot đang reply...</div>';
+        msgsEl.appendChild(typing);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: msg})
+          });
+          const data = await res.json();
+          msgsEl.removeChild(typing);
+          const reply = data.ok ? data.response : 'Lỗi, thử lại!';
+          msgsEl.insertAdjacentHTML('beforeend', frameMsgHTML(true, reply));
+        } catch(e) {
+          msgsEl.removeChild(typing);
+          msgsEl.insertAdjacentHTML('beforeend', frameMsgHTML(true, 'Lỗi mạng'));
+        }
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+      }
+            let chatTyping=false;let lastMsgTime=0;
+            function toggleChat(){let p=document.getElementById(&#39;chat-panel&#39;);p.style.display=p.style.display==&#39;flex&#39;?&#39;none&#39;:&#39;flex&#39;;if(p.style.display==&#39;flex&#39;)initChat();}
+            async function initChat(){try{let u=await (await fetch(&#39;/api/me&#39;)).json();if(u.ok){let h=await (await fetch(&#39;/api/chat-history&#39;)).json();let m=document.getElementById(&#39;chat-messages&#39;);m.innerHTML=h.map(c=>chatMsgHTML(c.is_bot,c.content,c.timestamp)).join(&#39;&#39;)+m.innerHTML;m.scrollTop=m.scrollHeight;}else{document.getElementById(&#39;chat-input-area&#39;).innerHTML=&#39;<div style="padding:1rem;text-align:center;color:#8899aa;font-size:.85rem;">👤 <a href="/login" style="color:#ff6a00;">Đăng nhập</a> để chat</div>&#39;;}}catch(e){}}
+            function chatMsgHTML(b,c,t=new Date().toLocaleString(&#39;vi-VN&#39;)){let l=b?&#39;bot msg-bot&#39;:&#39;user msg-user&#39;;return`<div class="chat-msg ${l}"><div class="msg-bubble" style="display:inline-block;max-width:85%;padding:.8rem 1rem;border-radius:18px;font-size:.85rem;line-height:1.4;background:${b?&#39;rgba(255,255,255,.08);border:1px solid rgba(255,150,0,.15);border-bottom-right-radius:4px;color:#f0f0f0&#39;:&#39;#ff6a00;border-bottom-left-radius:4px;color:#fff;margin-left:auto&#39;}">${c.replace(/\\\\n/g,&#39;<br>&#39;)}</div><div style="font-size:.7rem;color:#8899aa;margin-top:.3rem;font-family:Space Mono,monospace;">${t}</div></div>;`}
+            async function sendChatMsg(){let i=document.getElementById(&#39;chat-input&#39;);let m=i.value.trim();if(!m||Date.now()-lastMsgTime<1000||chatTyping)return;i.value=&#39;&#39;;lastMsgTime=Date.now();let e=document.getElementById(&#39;chat-messages&#39;);e.insertAdjacentHTML(&#39;beforeend&#39;,chatMsgHTML(false,m));e.scrollTop=e.scrollHeight;let t=document.createElement(&#39;div&#39;);t.id=&#39;chat-typing&#39;;t.textContent=&#39;Bot đang nghĩ...&#39;;e.appendChild(t);e.scrollTop=e.scrollHeight;chatTyping=true;try{let r=await fetch(&#39;/api/chat&#39;,{method:&#39;POST&#39;,headers:{&#39;Content-Type&#39;:&#39;application/json&#39;},body:JSON.stringify({message:m})});let d=await r.json();e.removeChild(t);if(d.ok)e.insertAdjacentHTML(&#39;beforeend&#39;,chatMsgHTML(true,d.response));else e.insertAdjacentHTML(&#39;beforeend&#39;,chatMsgHTML(true,&#39;Xin lỗi, lỗi rồi!&#39;));}catch(er){e.removeChild(t);e.insertAdjacentHTML(&#39;beforeend&#39;,chatMsgHTML(true,&#39;Lỗi mạng!&#39;));}e.scrollTop=e.scrollHeight;chatTyping=false;}
+            document.getElementById(&#39;chat-input&#39;).addEventListener(&#39;input&#39;,f=>{f.style.height=&#39;auto&#39;;f.style.height=f.scrollHeight+&#39;px&#39;;});
+    </script>
+
+    <script>
+      let allProducts = [];
+      let currentFilter = { cat: "", type: "", search: "" };
+
+      async function loadBestSellers() {
+        const r = await fetch("/api/products/best-sellers?limit=8");
+        const products = await r.json();
+        const sec = document.getElementById("bestSellersSection");
+        const grid = document.getElementById("bestSellersGrid");
+        const sellers = products.filter((p) => p.sales_count > 0);
+        if (!sellers.length) {
+          sec.style.display = "none";
+          return;
+        }
+        sec.style.display = "block";
+        grid.innerHTML = sellers
+          .map((p) => {
+            const price = p.sale_price > 0 ? p.sale_price : p.price;
+            return `<div class="product-card" onclick="openModal('${p.id}')">
+          <div class="product-img">${p.image ? `<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">` : "📦"}</div>
+          <div class="product-info">
+            <div class="product-cat">${p.category || ""}</div>
+            <div class="product-name">${p.name}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:.5rem">
+              <span class="product-price">${price.toLocaleString("vi-VN")}đ</span>
+              <span style="font-size:.72rem;background:rgba(255,106,0,.15);color:#ff9500;border:1px solid rgba(255,106,0,.3);border-radius:100px;padding:.1rem .5rem;font-family:'Space Mono',monospace">🔥 ${p.sales_count} đã bán</span>
+            </div>
+          </div>
+        </div>`;
+          })
+          .join("");
+      }
+
+      async function loadStats() {
+        const r = await fetch("/api/stats");
+        const d = await r.json();
+        document.getElementById("sProducts").textContent = d.products + "+";
+        document.getElementById("sUsers").textContent = d.users + "K+";
+        document.getElementById("sOrders").textContent = d.orders + "+";
+      }
+
+      async function loadCategories() {
+        const r = await fetch("/api/categories");
+        const cats = await r.json();
+        const el = document.getElementById("catFilters");
+        el.innerHTML = cats
+          .map(
+            (c) =>
+              `<button class="filter-btn" onclick="filterCat('${c}',this)">${c}</button>`,
+          )
+          .join("");
+      }
+
+      async function loadProducts() {
+        const r = await fetch("/api/products");
+        allProducts = await r.json();
+        renderProducts(allProducts);
+        renderSale(allProducts.filter((p) => p.sale_price > 0));
+      }
+
+      function renderProducts(products) {
+        const g = document.getElementById("productGrid");
+        if (!products.length) {
+          g.innerHTML =
+            '<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:3rem">Không tìm thấy sản phẩm nào 😢</p>';
+          return;
+        }
+        g.innerHTML = products.map((p) => cardHTML(p)).join("");
+      }
+
+      function renderSale(products) {
+        const g = document.getElementById("saleGrid");
+        const section = document.getElementById("flashSale");
+        if (!products.length) {
+          section.style.display = "none";
+          return;
+        }
+        section.style.display = "block";
+        g.innerHTML = products.map((p) => cardHTML(p)).join("");
+      }
+
+      function cardHTML(p) {
+        const imgEl = p.image
+          ? `<img class="card-img" src="${p.image}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          : "";
+        const placeholder = `<div class="card-img-placeholder" ${p.image ? 'style="display:none"' : ""}>🤖</div>`;
+        const saleTag =
+          p.sale_price > 0
+            ? `<span class="card-badge badge-sale">SALE</span>`
+            : p.price === 0
+              ? `<span class="card-badge badge-free">FREE</span>`
+              : "";
+        const typeTag = `<span class="card-type type-sell">🛒 Bán</span>`;
+        const price =
+          p.sale_price > 0
+            ? `<div class="price-current">${fmt(p.sale_price)}đ</div><div class="price-old">${fmt(p.price)}đ</div>`
+            : `<div class="price-current">${p.price === 0 ? "FREE" : fmt(p.price) + "đ"}</div>`;
+        return `<div class="product-card" onclick="openModal('${p.id}')">
+        ${imgEl}${placeholder}${saleTag}
+        <div class="card-body">
+          <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.3rem">${typeTag}<span class="card-cat">${p.category}</span></div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-desc">${p.description}</div>
+          <div class="card-footer">
+            <div class="price-box">${price}</div>
+            <div style="display:flex;gap:0.5rem">
+              <button class="btn-buy" onclick="event.stopPropagation();buyProduct('${p.id}')">Mua ngay</button>
+              <button class="btn btn-outline" onclick="event.stopPropagation();addToCart('${p.id}')" style="flex:1;font-size:0.75rem;padding:0.4rem 0.8rem">🛒 Thêm giỏ</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+      }
+
+      function fmt(n) {
+        return new Intl.NumberFormat("vi-VN").format(n);
+      }
+
+      async function openModal(id) {
+        const r = await fetch("/api/products/" + id);
+        const p = await r.json();
+        document.getElementById("modalImg").src = p.image || "";
+        document.getElementById("modalImg").style.display = p.image
+          ? "block"
+          : "none";
+        document.getElementById("modalCat").textContent =
+          p.category + " · Bán file";
+        document.getElementById("modalTitle").textContent = p.name;
+        document.getElementById("modalDesc").textContent = p.description;
+        const priceVal = p.sale_price > 0 ? p.sale_price : p.price;
+        document.getElementById("modalPrice").textContent =
+          priceVal === 0 ? "FREE" : fmt(priceVal) + "đ";
+        document.getElementById("modal").dataset.id = id;
+        document.getElementById("modalOverlay").classList.add("open");
+      }
+
+      function closeModal(e) {
+        if (!e || e.target === document.getElementById("modalOverlay"))
+          document.getElementById("modalOverlay").classList.remove("open");
+      }
+
+      function buyNow() {
+        const id = document.getElementById("modal").dataset.id;
+        buyProduct(id);
+        closeModal();
+      }
+
+      async function buyProduct(id) {
+        const res = await fetch("/api/me");
+        const user = await res.json();
+        if (!user.ok) {
+          showToast("🛒 Vui lòng đăng nhập để mua hàng!", "error");
+          setTimeout(() => (window.location.href = "/login"), 1500);
+          return;
+        }
+        window.location.href = "/checkout?product=" + id;
+      }
+
+      async function addToCart(id) {
+        const res = await fetch("/api/me");
+        const user = await res.json();
+        if (!user.ok) {
+          showToast("Vui lòng đăng nhập để thêm giỏ hàng!", "error");
+          setTimeout(() => (window.location.href = "/login"), 1500);
+          return;
+        }
+        const r = await fetch("/api/cart/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ product_id: id }),
+        });
+        const d = await r.json();
+        if (d.ok) {
+          showToast("🛒 Đã thêm vào giỏ hàng!");
+        } else {
+          showToast(d.msg || "Lỗi thêm giỏ", "error");
+        }
+      }
+
+      function showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.style.background = type === "success" ? "#10b981" : "#ef4444";
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 3000);
+      }
+
+      function filterCat(cat, btn) {
+        currentFilter.cat = cat;
+        currentFilter.type = "";
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        if (btn) btn.classList.add("active");
+        applyFilter();
+      }
+
+      function filterType(type) {
+        currentFilter.type = type;
+        currentFilter.cat = "";
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        applyFilter();
+      }
+
+      function searchProducts() {
+        currentFilter.search = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        applyFilter();
+      }
+
+      function applyFilter() {
+        let p = allProducts;
+        if (currentFilter.cat)
+          p = p.filter((x) => x.category === currentFilter.cat);
+        if (currentFilter.type)
+          p = p.filter((x) => x.type === currentFilter.type);
+        if (currentFilter.search)
+          p = p.filter(
+            (x) =>
+              x.name.toLowerCase().includes(currentFilter.search) ||
+              x.description.toLowerCase().includes(currentFilter.search),
+          );
+        renderProducts(p);
+        document
+          .getElementById("products")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      // Countdown: next midnight
+      function startCountdown() {
+        const end = new Date();
+        end.setHours(24, 0, 0, 0);
+        setInterval(() => {
+          const diff = end - Date.now();
+          if (diff <= 0) return;
+          const h = Math.floor(diff / 3600000),
+            m = Math.floor((diff % 3600000) / 60000),
+            s = Math.floor((diff % 60000) / 1000);
+          document.getElementById("cdH").textContent = String(h).padStart(
+            2,
+            "0",
+          );
+          document.getElementById("cdM").textContent = String(m).padStart(
+            2,
+            "0",
+          );
+          document.getElementById("cdS").textContent = String(s).padStart(
+            2,
+            "0",
+          );
+        }, 1000);
+      }
+
+      function toggleMenu() {
+        document.getElementById("navLinks").classList.toggle("open");
+      }
+
+      async function loadFeaturedReviews() {
+        // Get recent reviews - for demo, generate fake ones
+        const reviews = [
+          {
+            user: "admin",
+            rating: 5,
+            text: "Sản phẩm tuyệt vời, hoạt động hoàn hảo!",
+            date: "12/03/2024",
+          },
+          {
+            user: "user1",
+            rating: 5,
+            text: "Nhận được file nhanh, code chất lượng cao!",
+            date: "11/03/2024",
+          },
+          {
+            user: "user2",
+            rating: 4,
+            text: "Bot Zalo chạy mượt, hỗ trợ tốt.",
+            date: "10/03/2024",
+          },
+          {
+            user: "user3",
+            rating: 5,
+            text: "Giá rẻ mà chất lượng, recommend!",
+            date: "09/03/2024",
+          },
+          {
+            user: "user4",
+            rating: 5,
+            text: "Download ngay, test OK 100%",
+            date: "08/03/2024",
+          },
+          {
+            user: "user5",
+            rating: 5,
+            text: "Shop uy tín, sẽ mua tiếp!",
+            date: "07/03/2024",
+          },
+        ];
+        document.getElementById("reviewsCarousel").innerHTML = reviews
+          .map(
+            (r) => `
+              <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem">
+                <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+                  <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;color:#fff">${r.user[0].toUpperCase()}</div>
+                  <div>
+                    <div style="font-weight:700;margin-bottom:.3rem">${r.user}</div>
+                    <div style="color:#f59e0b;font-size:1rem">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
+                  </div>
+                </div>
+                <p style="color:var(--text);line-height:1.6;font-size:.9rem">${r.text}</p>
+                <div style="font-size:.75rem;color:var(--muted);margin-top:1rem;font-family:'Space Mono',monospace">${r.date}</div>
+              </div>
+            `,
+          )
+          .join("");
+      }
+
+      // ===== USER STATE =====
+      async function initUser() {
+        const res = await fetch("/api/me");
+        const u = await res.json();
+        const loginBtn = document.getElementById("navLoginBtn");
+        const userMenu = document.getElementById("navUserMenu");
+        const notifLink = document.getElementById("navNotifications");
+        const notifCount = document.getElementById("navNotifCount");
+        if (u.ok) {
+          if (u.unread_notifications > 0) {
+            notifLink.style.display = "flex";
+            notifCount.textContent = u.unread_notifications;
+            notifCount.style.display = "inline";
+          } else {
+            notifLink.style.display = "none";
+          }
+          loginBtn.style.display = "none";
+          userMenu.style.display = "block";
+          loginBtn.style.display = "none";
+          userMenu.style.display = "block";
+          document.getElementById("navUsername").textContent = u.username;
+          document.getElementById("dropdownUsername").textContent = u.username;
+          document.getElementById("dropdownBalance").textContent =
+            new Intl.NumberFormat("vi-VN").format(u.balance || 0) + " xu";
+          document.getElementById("navBalance").textContent =
+            new Intl.NumberFormat("vi-VN").format(u.balance || 0) + " xu";
+        } else {
+          loginBtn.style.display = "block";
+          userMenu.style.display = "none";
+        }
+      }
+
+      function toggleUserMenu() {
+        const d = document.getElementById("userDropdown");
+        d.style.display = d.style.display === "block" ? "none" : "block";
+      }
+      document.addEventListener("click", function (e) {
+        const menu = document.getElementById("navUserMenu");
+        if (menu && !menu.contains(e.target))
+          document.getElementById("userDropdown").style.display = "none";
+      });
+
+      async function openHistory() {
+        document.getElementById("userDropdown").style.display = "none";
+        document.getElementById("historyOverlay").style.display = "block";
+        const res = await fetch("/api/my-orders");
+        const d = await res.json();
+        const el = document.getElementById("historyList");
+        if (!d.ok || !d.orders.length) {
+          el.innerHTML =
+            '<p style="color:var(--muted);text-align:center;padding:2rem">Chưa có giao dịch nào</p>';
+          return;
+        }
+        el.innerHTML = d.orders
+          .map(
+            (o) => `
+        <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1rem">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap">
+            <div>
+              <div style="font-weight:700;margin-bottom:.3rem">${o.product_name}</div>
+              <div style="font-size:.8rem;color:var(--muted)">${o.created_at}</div>
+              ${o.coupon ? `<div style="font-size:.75rem;color:#10b981;margin-top:.2rem">🏷️ Coupon: ${o.coupon} (-${new Intl.NumberFormat("vi-VN").format(o.discount || 0)}đ)</div>` : ""}
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-weight:800;color:var(--accent);font-family:'Space Mono',monospace">${new Intl.NumberFormat("vi-VN").format(o.amount)}đ</div>
+              ${o.file_url ? `<a href="${o.file_url}" target="_blank" style="display:inline-block;margin-top:.4rem;padding:.3rem .7rem;background:rgba(255,106,0,.15);border:1px solid rgba(255,106,0,.3);border-radius:6px;color:var(--accent);text-decoration:none;font-size:.75rem">⬇ Tải file</a>` : '<span style="font-size:.75rem;color:var(--muted)">Chờ xử lý</span>'}
+            </div>
+          </div>
+        </div>
+      `,
+          )
+          .join("");
+      }
+
+      async function doLogout() {
+        await fetch("/api/logout");
+        window.location.reload();
+      }
+
+      function closeHistory() {
+        document.getElementById("historyOverlay").style.display = "none";
+      }
+
+      loadStats();
+      loadCategories();
+      loadProducts();
+      loadBestSellers();
+      loadFeaturedReviews();
+      startCountdown();
+      initUser();
+    </script>
+
+    <!-- HISTORY MODAL -->
+    <div
+      id="historyOverlay"
+      onclick="if (event.target === this) closeHistory();"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 2000;
+        overflow-y: auto;
+        padding: 2rem 1rem;
+      "
+    >
+      <div
+        style="
+          max-width: 650px;
+          margin: 0 auto;
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 20px;
+          padding: 2rem;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+          "
+        >
+          <h2 style="font-size: 1.3rem; font-weight: 800">
+            📋 Lịch sử giao dịch
+          </h2>
+          <button
+            onclick="closeHistory()"
+            style="
+              background: none;
+              border: none;
+              color: var(--muted);
+              font-size: 1.4rem;
+              cursor: pointer;
+            "
+          >
+            ✕
+          </button>
+        </div>
+        <div
+          id="historyList"
+          style="display: flex; flex-direction: column; gap: 0.8rem"
+        >
+          <p style="color: var(--muted); text-align: center; padding: 2rem">
+            Đang tải...
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

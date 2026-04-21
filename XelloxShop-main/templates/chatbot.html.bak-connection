@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🤖 AI Chat — Xelloxx</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #06080f;
+        --bg2: #0b0f1a;
+        --surface: #111827;
+        --surface2: #1a2235;
+        --glow: #ff6a00;
+        --glow2: #ff9c00;
+        --accent3: #ffcd00;
+        --text: #f2f4f8;
+        --muted: #6b7a99;
+        --border: rgba(255, 106, 0, 0.15);
+        --border2: rgba(255, 106, 0, 0.3);
+        --green: #00e5a0;
+        --blue: #4a9eff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Outfit", sans-serif;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Animated BG */
+      .bg-orbs {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        animation: floatOrb 20s ease-in-out infinite alternate;
+        opacity: 0.06;
+      }
+      .orb1 {
+        width: 500px;
+        height: 500px;
+        background: #ff6a00;
+        top: -150px;
+        left: -100px;
+        animation-duration: 18s;
+      }
+      .orb2 {
+        width: 400px;
+        height: 400px;
+        background: #ff9c00;
+        bottom: -100px;
+        right: -100px;
+        animation-duration: 22s;
+        animation-delay: -8s;
+      }
+      .orb3 {
+        width: 300px;
+        height: 300px;
+        background: #4a9eff;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-duration: 25s;
+        animation-delay: -14s;
+        opacity: 0.04;
+      }
+      @keyframes floatOrb {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(40px, 30px) scale(1.15);
+        }
+      }
+
+      /* Grid lines BG */
+      .grid-bg {
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 106, 0, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 106, 0, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: 0;
+      }
+
+      /* Header */
+      .header {
+        position: relative;
+        z-index: 10;
+        background: rgba(11, 15, 26, 0.85);
+        backdrop-filter: blur(24px);
+        border-bottom: 1px solid var(--border);
+        padding: 0 1.5rem;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-shrink: 0;
+      }
+      .logo-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 106, 0, 0.15),
+          rgba(255, 156, 0, 0.08)
+        );
+        border: 1px solid var(--border2);
+        border-radius: 10px;
+        padding: 0.4rem 0.8rem;
+        text-decoration: none;
+      }
+      .logo-text {
+        font-size: 1rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--glow), var(--glow2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.02em;
+      }
+      .header-divider {
+        width: 1px;
+        height: 24px;
+        background: var(--border);
+      }
+      .ai-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--glow2);
+      }
+      .ai-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+        animation: pulse 2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(0.85);
+        }
+      }
+      .header-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .icon-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--muted);
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .icon-btn:hover {
+        background: rgba(255, 106, 0, 0.1);
+        border-color: var(--border2);
+        color: var(--glow2);
+      }
+      .model-chip {
+        font-size: 0.7rem;
+        font-family: "JetBrains Mono", monospace;
+        background: rgba(74, 158, 255, 0.1);
+        border: 1px solid rgba(74, 158, 255, 0.2);
+        color: var(--blue);
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        letter-spacing: 0.03em;
+      }
+
+      /* Main layout */
+      .main {
+        flex: 1;
+        display: flex;
+        min-height: 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 260px;
+        background: rgba(11, 15, 26, 0.6);
+        border-right: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .sidebar-header {
+        padding: 1rem 1rem 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+      }
+      .quick-actions {
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .qa-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        padding: 0.7rem 0.9rem;
+        cursor: pointer;
+        text-align: left;
+        color: var(--text);
+        font-family: "Outfit", sans-serif;
+        font-size: 0.82rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .qa-btn:hover {
+        background: rgba(255, 106, 0, 0.08);
+        border-color: var(--border);
+        color: var(--glow2);
+      }
+      .qa-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+      }
+      .sidebar-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 0.5rem 0;
+      }
+      .memory-section {
+        padding: 0.5rem 1rem 1rem;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .mem-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .mem-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.5rem 0.7rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 0.3rem;
+        font-family: "JetBrains Mono", monospace;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .mem-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--green);
+        flex-shrink: 0;
+      }
+      .sidebar-footer {
+        padding: 0.8rem;
+        border-top: 1px solid var(--border);
+      }
+      .clear-btn {
+        width: 100%;
+        background: rgba(255, 106, 0, 0.06);
+        border: 1px solid rgba(255, 106, 0, 0.2);
+        border-radius: 8px;
+        color: var(--glow);
+        padding: 0.5rem;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: "Outfit", sans-serif;
+        transition: all 0.2s;
+      }
+      .clear-btn:hover {
+        background: rgba(255, 106, 0, 0.15);
+      }
+
+      /* Chat area */
+      .chat-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      #messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+        scroll-behavior: smooth;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      #messages::-webkit-scrollbar {
+        width: 4px;
+      }
+      #messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      #messages::-webkit-scrollbar-thumb {
+        background: rgba(255, 106, 0, 0.2);
+        border-radius: 2px;
+      }
+
+      /* Welcome screen */
+      .welcome {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        gap: 1.5rem;
+      }
+      .welcome-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 106, 0, 0.2),
+          rgba(255, 156, 0, 0.1)
+        );
+        border: 1px solid var(--border2);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        animation: welcomePop 0.6s ease both;
+        box-shadow: 0 0 40px rgba(255, 106, 0, 0.1);
+      }
+      @keyframes welcomePop {
+        from {
+          opacity: 0;
+          transform: scale(0.7);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .welcome h2 {
+        font-size: 1.6rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff, var(--glow2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeUp 0.5s 0.1s ease both;
+      }
+      .welcome p {
+        color: var(--muted);
+        font-size: 0.95rem;
+        max-width: 340px;
+        animation: fadeUp 0.5s 0.2s ease both;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .welcome-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        animation: fadeUp 0.5s 0.3s ease both;
+      }
+      .welcome-tag {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 0.4rem 0.9rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: var(--muted);
+      }
+      .welcome-tag:hover {
+        background: rgba(255, 106, 0, 0.1);
+        border-color: var(--border2);
+        color: var(--glow2);
+      }
+
+      /* Messages */
+      .msg-row {
+        display: flex;
+        gap: 0.8rem;
+        animation: msgIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      @keyframes msgIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .msg-row.user {
+        flex-direction: row-reverse;
+      }
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+      }
+      .avatar.bot {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 106, 0, 0.2),
+          rgba(255, 156, 0, 0.1)
+        );
+        border: 1px solid var(--border2);
+        color: var(--glow2);
+      }
+      .avatar.user {
+        background: linear-gradient(
+          135deg,
+          rgba(74, 158, 255, 0.2),
+          rgba(74, 158, 255, 0.05)
+        );
+        border: 1px solid rgba(74, 158, 255, 0.3);
+        color: var(--blue);
+      }
+      .bubble-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        max-width: 72%;
+      }
+      .msg-row.user .bubble-wrap {
+        align-items: flex-end;
+      }
+      .bubble {
+        padding: 0.9rem 1.1rem;
+        border-radius: 16px;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        position: relative;
+      }
+      .bubble.bot {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-top-left-radius: 4px;
+        color: var(--text);
+      }
+      .bubble.user {
+        background: linear-gradient(135deg, var(--glow), var(--glow2));
+        color: #fff;
+        border-bottom-right-radius: 4px;
+        border-top-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        font-weight: 500;
+      }
+      .msg-meta {
+        font-size: 0.68rem;
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .msg-row.user .msg-meta {
+        justify-content: flex-end;
+      }
+
+      /* Typing indicator */
+      .typing-row {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+      }
+      .typing-bubble {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        border-top-left-radius: 4px;
+        padding: 0.9rem 1.2rem;
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+      .typing-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--glow);
+        animation: typingBounce 1.4s ease-in-out infinite;
+      }
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes typingBounce {
+        0%,
+        80%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        40% {
+          transform: translateY(-6px);
+          opacity: 1;
+        }
+      }
+
+      /* Input area */
+      .input-area {
+        border-top: 1px solid var(--border);
+        background: rgba(11, 15, 26, 0.85);
+        backdrop-filter: blur(20px);
+        padding: 1rem 1.5rem;
+        flex-shrink: 0;
+      }
+      .input-wrap {
+        display: flex;
+        gap: 0.7rem;
+        align-items: flex-end;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 0.6rem 0.6rem 0.6rem 1.1rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .input-wrap:focus-within {
+        border-color: var(--border2);
+        box-shadow:
+          0 0 0 3px rgba(255, 106, 0, 0.07),
+          0 0 20px rgba(255, 106, 0, 0.05);
+      }
+      #chat-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text);
+        font-family: "Outfit", sans-serif;
+        font-size: 0.95rem;
+        outline: none;
+        resize: none;
+        max-height: 120px;
+        min-height: 24px;
+        line-height: 1.5;
+      }
+      #chat-input::placeholder {
+        color: var(--muted);
+      }
+      .send-btn {
+        width: 42px;
+        height: 42px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--glow), var(--glow2));
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(255, 106, 0, 0.3);
+      }
+      .send-btn:hover:not(:disabled) {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 106, 0, 0.45);
+      }
+      .send-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      .input-hint {
+        margin-top: 0.5rem;
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .input-hint span {
+        color: var(--glow);
+        opacity: 0.7;
+      }
+
+      /* Markdown-like formatting in bubbles */
+      .bubble strong {
+        font-weight: 700;
+        color: var(--glow2);
+      }
+      .bubble code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        background: rgba(255, 106, 0, 0.1);
+        border: 1px solid rgba(255, 106, 0, 0.15);
+        border-radius: 4px;
+        padding: 0.1em 0.4em;
+        color: var(--glow2);
+      }
+      .bubble ul {
+        padding-left: 1.2em;
+        margin: 0.3em 0;
+      }
+      .bubble li {
+        margin: 0.2em 0;
+      }
+      .bubble.user strong {
+        color: #fff;
+        opacity: 0.9;
+      }
+
+      /* Memory badge */
+      .mem-flash {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.65rem;
+        font-family: "JetBrains Mono", monospace;
+        background: rgba(0, 229, 160, 0.08);
+        border: 1px solid rgba(0, 229, 160, 0.2);
+        color: var(--green);
+        border-radius: 5px;
+        padding: 0.15rem 0.45rem;
+        margin-top: 0.3rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .header {
+          padding: 0 1rem;
+        }
+        #messages {
+          padding: 1rem;
+        }
+        .input-area {
+          padding: 0.8rem 1rem;
+        }
+        .bubble-wrap {
+          max-width: 85%;
+        }
+        .model-chip {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-orbs">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+    <div class="grid-bg"></div>
+
+    <!-- Header -->
+    <div class="header">
+      <a href="/" class="logo-badge">
+        <span style="font-size: 1.1rem">🛒</span>
+        <span class="logo-text">Xelloxx</span>
+      </a>
+      <div class="header-divider"></div>
+      <div class="ai-badge">
+        <div class="ai-dot"></div>
+        AI Bot Online
+      </div>
+      <div class="header-right">
+        <div class="model-chip">claude-sonnet-4</div>
+        <button class="icon-btn" onclick="clearChat()" title="Xóa chat">
+          🗑
+        </button>
+        <a href="/" class="icon-btn" title="Về trang chủ">←</a>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">Câu hỏi nhanh</div>
+        <div class="quick-actions">
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Số dư xu của tôi là bao nhiêu?')"
+          >
+            <span class="qa-icon">💰</span> Kiểm tra số dư
+          </button>
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Hướng dẫn tôi cách nạp tiền')"
+          >
+            <span class="qa-icon">💳</span> Nạp xu/tiền
+          </button>
+          <button class="qa-btn" onclick="quickAsk('Tôi cần hỗ trợ từ CSKH')">
+            <span class="qa-icon">📞</span> Liên hệ CSKH
+          </button>
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Cách mua hàng và thanh toán trên Xelloxx Shop?')"
+          >
+            <span class="qa-icon">🛍</span> Mua hàng
+          </button>
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Mã giới thiệu referral của tôi là gì?')"
+          >
+            <span class="qa-icon">🎁</span> Mã Referral
+          </button>
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Chính sách hoàn tiền và bảo hành sản phẩm?')"
+          >
+            <span class="qa-icon">🛡</span> Bảo hành & Hoàn tiền
+          </button>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="memory-section">
+          <div class="mem-label">🧠 Bộ nhớ phiên</div>
+          <div id="memory-list">
+            <div
+              class="mem-item"
+              style="
+                color: var(--muted);
+                font-size: 0.7rem;
+                border: none;
+                background: none;
+              "
+            >
+              Bot sẽ ghi nhớ ngữ cảnh trong cuộc trò chuyện này...
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-footer">
+          <button class="clear-btn" onclick="clearChat()">
+            🗑 Xóa lịch sử chat
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat area -->
+      <div class="chat-area">
+        <div id="messages">
+          <div class="welcome" id="welcome-screen">
+            <div class="welcome-icon">🤖</div>
+            <h2>Xin chào! Tôi là AI của Xelloxx</h2>
+            <p>
+              Tôi được đào tạo chuyên sâu về shop và luôn học hỏi từ mỗi cuộc
+              hội thoại để phục vụ bạn tốt hơn.
+            </p>
+            <div class="welcome-tags">
+              <div class="welcome-tag" onclick="quickAsk('Kiểm tra số dư xu')">
+                💰 Số dư xu
+              </div>
+              <div class="welcome-tag" onclick="quickAsk('Hướng dẫn nạp tiền')">
+                💳 Nạp tiền
+              </div>
+              <div class="welcome-tag" onclick="quickAsk('Cách mua hàng')">
+                🛍 Mua hàng
+              </div>
+              <div
+                class="welcome-tag"
+                onclick="quickAsk('Chính sách hoàn tiền')"
+              >
+                🛡 Hoàn tiền
+              </div>
+              <div class="welcome-tag" onclick="quickAsk('Liên hệ CSKH')">
+                📞 CSKH
+              </div>
+              <div
+                class="welcome-tag"
+                onclick="quickAsk('Giới thiệu shop cho bạn bè')"
+              >
+                🎁 Referral
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-area">
+          <div class="input-wrap">
+            <textarea
+              id="chat-input"
+              rows="1"
+              placeholder="Nhập câu hỏi của bạn..."
+            ></textarea>
+            <button class="send-btn" id="send-btn" onclick="sendMsg()">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+          <div class="input-hint">
+            <span>Enter</span> gửi · <span>Shift+Enter</span> xuống dòng · AI tự
+            học từ hội thoại
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API = "https://api.anthropic.com/v1/messages";
+      let conversationHistory = [];
+      let memoryStore = [];
+      let lastMsgTime = 0;
+      let busy = false;
+
+      // System prompt - self-learning persona
+      const SYSTEM_PROMPT = `Bạn là AI hỗ trợ khách hàng thông minh của Xelloxx Shop - một cửa hàng bán sản phẩm số uy tín. 
+
+TÍNH CÁCH:
+- Thân thiện, chuyên nghiệp, nhiệt tình
+- Trả lời ngắn gọn súc tích, dùng emoji phù hợp
+- Luôn xưng hô "bạn" với khách, tự gọi mình là "mình" hoặc "AI Xelloxx"
+
+CHỨC NĂNG CHÍNH:
+• Hỗ trợ kiểm tra số dư xu/tiền trong tài khoản
+• Hướng dẫn nạp tiền qua các cổng thanh toán
+• Giải đáp thắc mắc về sản phẩm, đơn hàng
+• Hướng dẫn quy trình mua hàng và thanh toán
+• Chính sách bảo hành, hoàn tiền, đổi trả
+• Chương trình giới thiệu (referral) nhận xu thưởng
+• Liên hệ CSKH: Email support@xelloxx.com | Zalo: 0900.000.000
+
+KHẢ NĂNG TỰ HỌC:
+- Ghi nhớ toàn bộ ngữ cảnh hội thoại hiện tại
+- Điều chỉnh cách trả lời dựa trên phong cách người dùng
+- Nếu được hỏi thứ không biết, thành thật nói và gợi ý liên hệ CSKH
+
+ĐỊNH DẠNG:
+- Dùng bullet points khi liệt kê nhiều điểm
+- In đậm từ khóa quan trọng bằng **từ khóa**
+- Dùng emoji hợp lý để dễ đọc
+- Tránh trả lời quá dài dòng
+
+THÔNG TIN GIÁ TRỊ QUY ĐỔI:
+- 1 xu = 1.000 VNĐ
+- Nạp tối thiểu 50.000 VNĐ
+- Referral thành công: +20 xu/người
+
+Luôn kết thúc bằng câu hỏi/gợi ý giúp đỡ thêm.`;
+
+      // Auto resize textarea
+      const textarea = document.getElementById("chat-input");
+      textarea.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = Math.min(this.scrollHeight, 120) + "px";
+      });
+      textarea.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMsg();
+        }
+      });
+
+      function getTime() {
+        return new Date().toLocaleString("vi-VN", {
+          hour: "2-digit",
+          minute: "2-digit",
+          day: "2-digit",
+          month: "2-digit",
+        });
+      }
+
+      function hideWelcome() {
+        const w = document.getElementById("welcome-screen");
+        if (w) w.remove();
+      }
+
+      function addMsg(isBot, content, withMemBadge = false) {
+        hideWelcome();
+        const msgs = document.getElementById("messages");
+        const row = document.createElement("div");
+        row.className = `msg-row ${isBot ? "" : "user"}`;
+
+        const formattedContent = content
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/`(.*?)`/g, "<code>$1</code>")
+          .replace(/\n/g, "<br>")
+          .replace(/^• (.+)/gm, "<li>$1</li>")
+          .replace(/(<li>.*<\/li>)/s, "<ul>$1</ul>");
+
+        const memBadge = withMemBadge
+          ? `<div class="mem-flash">🧠 Đã cập nhật bộ nhớ</div>`
+          : "";
+
+        row.innerHTML = `
+    <div class="avatar ${isBot ? "bot" : "user"}">${isBot ? "🤖" : "👤"}</div>
+    <div class="bubble-wrap">
+      <div class="bubble ${isBot ? "bot" : "user"}">${formattedContent}</div>
+      <div class="msg-meta">${getTime()}${isBot ? " · AI Xelloxx" : ""}</div>
+      ${memBadge}
+    </div>`;
+        msgs.appendChild(row);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function showTyping() {
+        const msgs = document.getElementById("messages");
+        const div = document.createElement("div");
+        div.className = "typing-row";
+        div.id = "typing-indicator";
+        div.innerHTML = `
+    <div class="avatar bot">🤖</div>
+    <div class="typing-bubble">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>`;
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function removeTyping() {
+        const el = document.getElementById("typing-indicator");
+        if (el) el.remove();
+      }
+
+      function updateMemory(userMsg, botReply) {
+        // Extract key topics from conversation
+        const topics = [];
+        if (/số dư|xu|tiền/i.test(userMsg)) topics.push("💰 Hỏi về số dư");
+        if (/nạp|thanh toán/i.test(userMsg)) topics.push("💳 Nạp tiền");
+        if (/mua|hàng|sản phẩm/i.test(userMsg)) topics.push("🛍 Mua hàng");
+        if (/hoàn|bảo hành|đổi/i.test(userMsg)) topics.push("🛡 Bảo hành");
+        if (/referral|giới thiệu/i.test(userMsg)) topics.push("🎁 Referral");
+        if (/lỗi|vấn đề|không/i.test(userMsg)) topics.push("⚠️ Khiếu nại");
+
+        topics.forEach((t) => {
+          if (!memoryStore.includes(t)) {
+            memoryStore.push(t);
+            renderMemory();
+          }
+        });
+      }
+
+      function renderMemory() {
+        const list = document.getElementById("memory-list");
+        if (memoryStore.length === 0) {
+          list.innerHTML =
+            '<div class="mem-item" style="color:var(--muted);font-size:0.7rem;border:none;background:none;">Bot sẽ ghi nhớ ngữ cảnh...</div>';
+          return;
+        }
+        list.innerHTML = memoryStore
+          .map(
+            (m) => `
+    <div class="mem-item"><div class="mem-dot"></div>${m}</div>
+  `,
+          )
+          .join("");
+      }
+
+      async function sendMsg() {
+        const input = document.getElementById("chat-input");
+        const msg = input.value.trim();
+        if (!msg || busy || Date.now() - lastMsgTime < 800) return;
+
+        lastMsgTime = Date.now();
+        busy = true;
+        document.getElementById("send-btn").disabled = true;
+        input.value = "";
+        input.style.height = "auto";
+
+        addMsg(false, msg);
+        conversationHistory.push({ role: "user", content: msg });
+        showTyping();
+
+        try {
+          const res = await fetch(API, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-20250514",
+              max_tokens: 1000,
+              system: SYSTEM_PROMPT,
+              messages: conversationHistory,
+            }),
+          });
+
+          const data = await res.json();
+          removeTyping();
+
+          if (data.content && data.content[0]) {
+            const reply = data.content[0].text;
+            conversationHistory.push({ role: "assistant", content: reply });
+
+            // Check if memory should be flashed (every 3 exchanges)
+            const shouldFlash = conversationHistory.length % 6 === 0;
+            addMsg(true, reply, shouldFlash);
+            updateMemory(msg, reply);
+          } else {
+            addMsg(
+              true,
+              "⚠️ Xin lỗi, có lỗi xảy ra. Vui lòng thử lại hoặc liên hệ CSKH: **support@xelloxx.com**",
+            );
+          }
+        } catch (e) {
+          removeTyping();
+          addMsg(
+            true,
+            "🔴 Lỗi kết nối. Kiểm tra mạng và thử lại.\n\nHoặc liên hệ CSKH: **support@xelloxx.com**",
+          );
+        }
+
+        busy = false;
+        document.getElementById("send-btn").disabled = false;
+        textarea.focus();
+      }
+
+      function quickAsk(text) {
+        document.getElementById("chat-input").value = text;
+        sendMsg();
+      }
+
+      function clearChat() {
+        conversationHistory = [];
+        memoryStore = [];
+        renderMemory();
+        const msgs = document.getElementById("messages");
+        msgs.innerHTML = `
+    <div class="welcome" id="welcome-screen">
+      <div class="welcome-icon">🤖</div>
+      <h2>Xin chào! Tôi là AI của Xelloxx</h2>
+      <p>Tôi được đào tạo chuyên sâu về shop và luôn học hỏi từ mỗi cuộc hội thoại để phục vụ bạn tốt hơn.</p>
+      <div class="welcome-tags">
+        <div class="welcome-tag" onclick="quickAsk('Kiểm tra số dư xu')">💰 Số dư xu</div>
+        <div class="welcome-tag" onclick="quickAsk('Hướng dẫn nạp tiền')">💳 Nạp tiền</div>
+        <div class="welcome-tag" onclick="quickAsk('Cách mua hàng')">🛍 Mua hàng</div>
+        <div class="welcome-tag" onclick="quickAsk('Chính sách hoàn tiền')">🛡 Hoàn tiền</div>
+        <div class="welcome-tag" onclick="quickAsk('Liên hệ CSKH')">📞 CSKH</div>
+        <div class="welcome-tag" onclick="quickAsk('Giới thiệu shop cho bạn bè')">🎁 Referral</div>
+      </div>
+    </div>`;
+      }
+
+      // Focus input on load
+      window.addEventListener("load", () => {
+        setTimeout(() => document.getElementById("chat-input").focus(), 300);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🤖 AI Chat — Xelloxx</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #06080f;
+        --bg2: #0b0f1a;
+        --surface: #111827;
+        --surface2: #1a2235;
+        --glow: #ff6a00;
+        --glow2: #ff9c00;
+        --text: #f2f4f8;
+        --muted: #6b7a99;
+        --border: rgba(255, 106, 0, 0.15);
+        --border2: rgba(255, 106, 0, 0.3);
+        --green: #00e5a0;
+        --blue: #4a9eff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Outfit", sans-serif;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+      }
+      .bg-orbs {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        animation: floatOrb 20s ease-in-out infinite alternate;
+        opacity: 0.06;
+      }
+      .orb1 {
+        width: 500px;
+        height: 500px;
+        background: #ff6a00;
+        top: -150px;
+        left: -100px;
+        animation-duration: 18s;
+      }
+      .orb2 {
+        width: 400px;
+        height: 400px;
+        background: #ff9c00;
+        bottom: -100px;
+        right: -100px;
+        animation-duration: 22s;
+        animation-delay: -8s;
+      }
+      .orb3 {
+        width: 300px;
+        height: 300px;
+        background: #4a9eff;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-duration: 25s;
+        animation-delay: -14s;
+        opacity: 0.04;
+      }
+      @keyframes floatOrb {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(40px, 30px) scale(1.15);
+        }
+      }
+      .grid-bg {
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 106, 0, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 106, 0, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: 0;
+      }
+      .header {
+        position: relative;
+        z-index: 10;
+        background: rgba(11, 15, 26, 0.85);
+        backdrop-filter: blur(24px);
+        border-bottom: 1px solid var(--border);
+        padding: 0 1.5rem;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-shrink: 0;
+      }
+      .logo-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 106, 0, 0.15),
+          rgba(255, 156, 0, 0.08)
+        );
+        border: 1px solid var(--border2);
+        border-radius: 10px;
+        padding: 0.4rem 0.8rem;
+        text-decoration: none;
+      }
+      .logo-text {
+        font-size: 1rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--glow), var(--glow2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.02em;
+      }
+      .header-divider {
+        width: 1px;
+        height: 24px;
+        background: var(--border);
+      }
+      .ai-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--glow2);
+      }
+      .ai-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+        animation: pulse 2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(0.85);
+        }
+      }
+      .header-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .icon-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--muted);
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .icon-btn:hover {
+        background: rgba(255, 106, 0, 0.1);
+        border-color: var(--border2);
+        color: var(--glow2);
+      }
+      .model-chip {
+        font-size: 0.7rem;
+        font-family: "JetBrains Mono", monospace;
+        background: rgba(74, 158, 255, 0.1);
+        border: 1px solid rgba(74, 158, 255, 0.2);
+        color: var(--blue);
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        letter-spacing: 0.03em;
+      }
+      .main {
+        flex: 1;
+        display: flex;
+        min-height: 0;
+        position: relative;
+        z-index: 1;
+      }
+      .sidebar {
+        width: 260px;
+        background: rgba(11, 15, 26, 0.6);
+        border-right: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .sidebar-header {
+        padding: 1rem 1rem 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+      }
+      .quick-actions {
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .qa-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        padding: 0.7rem 0.9rem;
+        cursor: pointer;
+        text-align: left;
+        color: var(--text);
+        font-family: "Outfit", sans-serif;
+        font-size: 0.82rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .qa-btn:hover {
+        background: rgba(255, 106, 0, 0.08);
+        border-color: var(--border);
+        color: var(--glow2);
+      }
+      .sidebar-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 0.5rem 0;
+      }
+      .memory-section {
+        padding: 0.5rem 1rem 1rem;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .mem-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
+      .mem-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.5rem 0.7rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 0.3rem;
+        font-family: "JetBrains Mono", monospace;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .mem-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--green);
+        flex-shrink: 0;
+      }
+      .sidebar-footer {
+        padding: 0.8rem;
+        border-top: 1px solid var(--border);
+      }
+      .clear-btn {
+        width: 100%;
+        background: rgba(255, 106, 0, 0.06);
+        border: 1px solid rgba(255, 106, 0, 0.2);
+        border-radius: 8px;
+        color: var(--glow);
+        padding: 0.5rem;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: "Outfit", sans-serif;
+        transition: all 0.2s;
+      }
+      .clear-btn:hover {
+        background: rgba(255, 106, 0, 0.15);
+      }
+      .chat-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      #messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.5rem;
+        scroll-behavior: smooth;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      #messages::-webkit-scrollbar {
+        width: 4px;
+      }
+      #messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      #messages::-webkit-scrollbar-thumb {
+        background: rgba(255, 106, 0, 0.2);
+        border-radius: 2px;
+      }
+      .welcome {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        gap: 1.5rem;
+      }
+      .welcome-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 106, 0, 0.2),
+          rgba(255, 156, 0, 0.1)
+        );
+        border: 1px solid var(--border2);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        animation: welcomePop 0.6s ease both;
+        box-shadow: 0 0 40px rgba(255, 106, 0, 0.1);
+      }
+      @keyframes welcomePop {
+        from {
+          opacity: 0;
+          transform: scale(0.7);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .welcome h2 {
+        font-size: 1.6rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff, var(--glow2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeUp 0.5s 0.1s ease both;
+      }
+      .welcome p {
+        color: var(--muted);
+        font-size: 0.95rem;
+        max-width: 340px;
+        animation: fadeUp 0.5s 0.2s ease both;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .welcome-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        animation: fadeUp 0.5s 0.3s ease both;
+      }
+      .welcome-tag {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 0.4rem 0.9rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: var(--muted);
+      }
+      .welcome-tag:hover {
+        background: rgba(255, 106, 0, 0.1);
+        border-color: var(--border2);
+        color: var(--glow2);
+      }
+      .msg-row {
+        display: flex;
+        gap: 0.8rem;
+        animation: msgIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      @keyframes msgIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .msg-row.user {
+        flex-direction: row-reverse;
+      }
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+      }
+      .avatar.bot {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 106, 0, 0.2),
+          rgba(255, 156, 0, 0.1)
+        );
+        border: 1px solid var(--border2);
+        color: var(--glow2);
+      }
+      .avatar.user {
+        background: linear-gradient(
+          135deg,
+          rgba(74, 158, 255, 0.2),
+          rgba(74, 158, 255, 0.05)
+        );
+        border: 1px solid rgba(74, 158, 255, 0.3);
+        color: var(--blue);
+      }
+      .bubble-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        max-width: 72%;
+      }
+      .msg-row.user .bubble-wrap {
+        align-items: flex-end;
+      }
+      .bubble {
+        padding: 0.9rem 1.1rem;
+        border-radius: 16px;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        position: relative;
+      }
+      .bubble.bot {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-top-left-radius: 4px;
+        color: var(--text);
+      }
+      .bubble.user {
+        background: linear-gradient(135deg, var(--glow), var(--glow2));
+        color: #fff;
+        border-bottom-right-radius: 4px;
+        border-top-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        font-weight: 500;
+      }
+      .msg-meta {
+        font-size: 0.68rem;
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .msg-row.user .msg-meta {
+        justify-content: flex-end;
+      }
+      .typing-row {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+      }
+      .typing-bubble {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        border-top-left-radius: 4px;
+        padding: 0.9rem 1.2rem;
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+      .typing-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--glow);
+        animation: typingBounce 1.4s ease-in-out infinite;
+      }
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes typingBounce {
+        0%,
+        80%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        40% {
+          transform: translateY(-6px);
+          opacity: 1;
+        }
+      }
+      .apikey-bar {
+        background: rgba(255, 106, 0, 0.07);
+        border-top: 1px solid rgba(255, 106, 0, 0.2);
+        padding: 0.55rem 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        flex-shrink: 0;
+      }
+      .apikey-bar input {
+        flex: 1;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 106, 0, 0.25);
+        border-radius: 8px;
+        color: var(--text);
+        padding: 0.35rem 0.8rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        outline: none;
+        min-width: 0;
+      }
+      .apikey-bar input:focus {
+        border-color: var(--glow);
+      }
+      .apikey-bar .save-btn {
+        background: linear-gradient(135deg, var(--glow), var(--glow2));
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        padding: 0.35rem 0.9rem;
+        font-size: 0.78rem;
+        font-family: "Outfit", sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .apikey-bar a {
+        font-size: 0.7rem;
+        color: var(--muted);
+        white-space: nowrap;
+        text-decoration: none;
+      }
+      .apikey-bar a:hover {
+        color: var(--glow2);
+      }
+      .input-area {
+        border-top: 1px solid var(--border);
+        background: rgba(11, 15, 26, 0.85);
+        backdrop-filter: blur(20px);
+        padding: 1rem 1.5rem;
+        flex-shrink: 0;
+      }
+      .input-wrap {
+        display: flex;
+        gap: 0.7rem;
+        align-items: flex-end;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 0.6rem 0.6rem 0.6rem 1.1rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .input-wrap:focus-within {
+        border-color: var(--border2);
+        box-shadow:
+          0 0 0 3px rgba(255, 106, 0, 0.07),
+          0 0 20px rgba(255, 106, 0, 0.05);
+      }
+      #chat-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text);
+        font-family: "Outfit", sans-serif;
+        font-size: 0.95rem;
+        outline: none;
+        resize: none;
+        max-height: 120px;
+        min-height: 24px;
+        line-height: 1.5;
+      }
+      #chat-input::placeholder {
+        color: var(--muted);
+      }
+      .send-btn {
+        width: 42px;
+        height: 42px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--glow), var(--glow2));
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(255, 106, 0, 0.3);
+      }
+      .send-btn:hover:not(:disabled) {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 106, 0, 0.45);
+      }
+      .send-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      .input-hint {
+        margin-top: 0.5rem;
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .input-hint span {
+        color: var(--glow);
+        opacity: 0.7;
+      }
+      .bubble strong {
+        font-weight: 700;
+        color: var(--glow2);
+      }
+      .bubble code {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        background: rgba(255, 106, 0, 0.1);
+        border: 1px solid rgba(255, 106, 0, 0.15);
+        border-radius: 4px;
+        padding: 0.1em 0.4em;
+        color: var(--glow2);
+      }
+      .bubble ul {
+        padding-left: 1.2em;
+        margin: 0.3em 0;
+      }
+      .bubble li {
+        margin: 0.2em 0;
+      }
+      .bubble.user strong {
+        color: #fff;
+        opacity: 0.9;
+      }
+      .mem-flash {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.65rem;
+        font-family: "JetBrains Mono", monospace;
+        background: rgba(0, 229, 160, 0.08);
+        border: 1px solid rgba(0, 229, 160, 0.2);
+        color: var(--green);
+        border-radius: 5px;
+        padding: 0.15rem 0.45rem;
+        margin-top: 0.3rem;
+      }
+      .err-box {
+        background: rgba(255, 60, 60, 0.08);
+        border: 1px solid rgba(255, 60, 60, 0.25);
+        border-radius: 8px;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+        color: #ff6b6b;
+        font-family: "JetBrains Mono", monospace;
+        margin-top: 0.3rem;
+        word-break: break-all;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .header {
+          padding: 0 1rem;
+        }
+        #messages {
+          padding: 1rem;
+        }
+        .input-area {
+          padding: 0.8rem 1rem;
+        }
+        .bubble-wrap {
+          max-width: 85%;
+        }
+        .model-chip {
+          display: none;
+        }
+        .apikey-bar {
+          padding: 0.5rem 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-orbs">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+    <div class="grid-bg"></div>
+
+    <div class="header">
+      <a href="/" class="logo-badge">
+        <span style="font-size: 1.1rem">🛒</span>
+        <span class="logo-text">Xelloxx</span>
+      </a>
+      <div class="header-divider"></div>
+      <div class="ai-badge">
+        <div class="ai-dot"></div>
+        AI Bot Online
+      </div>
+      <div class="header-right">
+        <div class="model-chip">claude-sonnet-4</div>
+        <button class="icon-btn" onclick="clearChat()" title="Xoa chat">
+          🗑
+        </button>
+        <a href="/" class="icon-btn" title="Ve trang chu">←</a>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="sidebar">
+        <div class="sidebar-header">Cau hoi nhanh</div>
+        <div class="quick-actions">
+          <button
+            class="qa-btn"
+            onclick="quickAsk('So du xu cua toi la bao nhieu?')"
+          >
+            <span>💰</span> Kiem tra so du
+          </button>
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Huong dan toi cach nap tien')"
+          >
+            <span>💳</span> Nap xu/tien
+          </button>
+          <button class="qa-btn" onclick="quickAsk('Toi can ho tro tu CSKH')">
+            <span>📞</span> Lien he CSKH
+          </button>
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Cach mua hang va thanh toan tren Xelloxx Shop?')"
+          >
+            <span>🛍</span> Mua hang
+          </button>
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Ma gioi thieu referral cua toi la gi?')"
+          >
+            <span>🎁</span> Ma Referral
+          </button>
+          <button
+            class="qa-btn"
+            onclick="quickAsk('Chinh sach hoan tien va bao hanh san pham?')"
+          >
+            <span>🛡</span> Bao hanh
+          </button>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="memory-section">
+          <div class="mem-label">🧠 Bo nho phien</div>
+          <div id="memory-list">
+            <div
+              class="mem-item"
+              style="
+                color: var(--muted);
+                font-size: 0.7rem;
+                border: none;
+                background: none;
+              "
+            >
+              Bot se ghi nho ngu canh trong cuoc tro chuyen nay...
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-footer">
+          <button class="clear-btn" onclick="clearChat()">
+            🗑 Xoa lich su chat
+          </button>
+        </div>
+      </div>
+
+      <div class="chat-area">
+        <div id="messages">
+          <div class="welcome" id="welcome-screen">
+            <div class="welcome-icon">🤖</div>
+            <h2>Xin chao! Toi la AI cua Xelloxx</h2>
+            <p>
+              Toi duoc dao tao chuyen sau ve shop va luon hoc hoi tu moi cuoc
+              hoi thoai de phuc vu ban tot hon.
+            </p>
+            <div class="welcome-tags">
+              <div class="welcome-tag" onclick="quickAsk('Kiem tra so du xu')">
+                💰 So du xu
+              </div>
+              <div class="welcome-tag" onclick="quickAsk('Huong dan nap tien')">
+                💳 Nap tien
+              </div>
+              <div class="welcome-tag" onclick="quickAsk('Cach mua hang')">
+                🛍 Mua hang
+              </div>
+              <div
+                class="welcome-tag"
+                onclick="quickAsk('Chinh sach hoan tien')"
+              >
+                🛡 Hoan tien
+              </div>
+              <div class="welcome-tag" onclick="quickAsk('Lien he CSKH')">
+                📞 CSKH
+              </div>
+              <div
+                class="welcome-tag"
+                onclick="quickAsk('Gioi thieu shop cho ban be')"
+              >
+                🎁 Referral
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="apikey-bar">
+          <span
+            style="
+              font-size: 0.75rem;
+              color: var(--glow2);
+              white-space: nowrap;
+              font-weight: 600;
+            "
+            >🔑 Anthropic API Key:</span
+          >
+          <input
+            id="api-key-input"
+            type="password"
+            placeholder="sk-ant-api03-..."
+            autocomplete="off"
+          />
+          <button class="save-btn" onclick="saveKey()">Luu Key</button>
+          <a href="https://console.anthropic.com/keys" target="_blank"
+            >Lay key ↗</a
+          >
+        </div>
+
+        <div class="input-area">
+          <div class="input-wrap">
+            <textarea
+              id="chat-input"
+              rows="1"
+              placeholder="Nhap cau hoi cua ban..."
+            ></textarea>
+            <button class="send-btn" id="send-btn" onclick="sendMsg()">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+          <div class="input-hint">
+            <span>Enter</span> gui · <span>Shift+Enter</span> xuong dong · AI tu
+            hoc tu hoi thoai
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "https://api.anthropic.com/v1/messages";
+      let history = [];
+      let memStore = [];
+      let lastTime = 0;
+      let busy = false;
+
+      const SYSTEM = `Ban la AI ho tro khach hang chuyen nghiep cua Xelloxx Shop - cua hang ban san pham so uy tin.
+
+TINH CACH:
+- Than thien, chuyen nghiep, nhiet tinh
+- Tra loi ngan gon, dung emoji phu hop
+- Xung ho "ban" voi khach, tu goi la "AI Xelloxx"
+
+CHUC NANG:
+• Kiem tra so du xu/tien tai khoan
+• Huong dan nap tien qua cong thanh toan
+• Giai dap thac mac san pham, don hang
+• Huong dan mua hang va thanh toan
+• Chinh sach bao hanh, hoan tien, doi tra
+• Chuong trinh referral nhan xu thuong
+• CSKH: Email support@xelloxx.com | Zalo: 0900.000.000
+
+QUY DOI:
+- 1 xu = 1.000 VND
+- Nap toi thieu 50.000 VND (50 xu)
+- Referral thanh cong: +20 xu/nguoi
+
+DINH DANG: Dung bullet khi liet ke, in dam tu khoa quan trong bang **tu**, dung emoji hop ly. Ket thuc bang goi y giup them.`;
+
+      function saveKey() {
+        const inp = document.getElementById("api-key-input");
+        const k = inp.value.trim();
+        if (!k || k.startsWith("\u2022")) {
+          alert("Vui long nhap API key hop le!");
+          return;
+        }
+        localStorage.setItem("xello_key", k);
+        inp.value =
+          "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
+        addMsg(
+          true,
+          "**API Key da luu!** Ban co the bat dau chat roi nhe. \u{1F916}",
+        );
+      }
+      function getKey() {
+        return localStorage.getItem("xello_key") || "";
+      }
+
+      function getTime() {
+        return new Date().toLocaleString("vi-VN", {
+          hour: "2-digit",
+          minute: "2-digit",
+          day: "2-digit",
+          month: "2-digit",
+        });
+      }
+
+      function hideWelcome() {
+        const w = document.getElementById("welcome-screen");
+        if (w) w.remove();
+      }
+
+      function addMsg(isBot, content, flash) {
+        hideWelcome();
+        const msgs = document.getElementById("messages");
+        const row = document.createElement("div");
+        row.className = "msg-row" + (isBot ? "" : " user");
+        const html = content
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/`(.*?)`/g, "<code>$1</code>")
+          .replace(/\n/g, "<br>");
+        const badge = flash
+          ? '<div class="mem-flash">\uD83E\uDDE0 Bo nho cap nhat</div>'
+          : "";
+        row.innerHTML = `
+    <div class="avatar ${isBot ? "bot" : "user"}">${isBot ? "\uD83E\uDD16" : "\uD83D\uDC64"}</div>
+    <div class="bubble-wrap">
+      <div class="bubble ${isBot ? "bot" : "user"}">${html}</div>
+      <div class="msg-meta">${getTime()}${isBot ? " \u00B7 AI Xelloxx" : ""}</div>
+      ${badge}
+    </div>`;
+        msgs.appendChild(row);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function addErr(detail) {
+        hideWelcome();
+        const msgs = document.getElementById("messages");
+        const row = document.createElement("div");
+        row.className = "msg-row";
+        row.innerHTML = `
+    <div class="avatar bot">\uD83E\uDD16</div>
+    <div class="bubble-wrap">
+      <div class="bubble bot">\u26A0\uFE0F Co loi xay ra khi goi AI. Kiem tra API key va thu lai.</div>
+      <div class="err-box">${detail}</div>
+      <div class="msg-meta">${getTime()} \u00B7 AI Xelloxx</div>
+    </div>`;
+        msgs.appendChild(row);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function showTyping() {
+        const msgs = document.getElementById("messages");
+        const d = document.createElement("div");
+        d.className = "typing-row";
+        d.id = "typing";
+        d.innerHTML = `<div class="avatar bot">\uD83E\uDD16</div><div class="typing-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+        msgs.appendChild(d);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+      function removeTyping() {
+        const el = document.getElementById("typing");
+        if (el) el.remove();
+      }
+
+      function updateMemory(msg) {
+        const map = [
+          [/so du|xu|tien/i, "\uD83D\uDCB0 Hoi ve so du"],
+          [/nap|thanh toan/i, "\uD83D\uDCB3 Nap tien"],
+          [/mua|hang|san pham/i, "\uD83D\uDED4 Mua hang"],
+          [/hoan|bao hanh|doi/i, "\uD83D\uDEE1 Bao hanh"],
+          [/referral|gioi thieu/i, "\uD83C\uDF81 Referral"],
+          [/loi|van de/i, "\u26A0\uFE0F Khieu nai"],
+        ];
+        map.forEach(([re, label]) => {
+          if (re.test(msg) && !memStore.includes(label)) {
+            memStore.push(label);
+            const list = document.getElementById("memory-list");
+            list.innerHTML = memStore
+              .map(
+                (m) =>
+                  `<div class="mem-item"><div class="mem-dot"></div>${m}</div>`,
+              )
+              .join("");
+          }
+        });
+      }
+
+      async function sendMsg() {
+        const inp = document.getElementById("chat-input");
+        const msg = inp.value.trim();
+        if (!msg || busy || Date.now() - lastTime < 800) return;
+
+        const key = getKey();
+        if (!key) {
+          addMsg(
+            true,
+            "\uD83D\uDD11 Vui long nhap **Anthropic API Key** o o ben duoi roi bam **Luu Key** truoc khi chat nhe!",
+          );
+          return;
+        }
+
+        lastTime = Date.now();
+        busy = true;
+        document.getElementById("send-btn").disabled = true;
+        inp.value = "";
+        inp.style.height = "auto";
+
+        addMsg(false, msg);
+        history.push({ role: "user", content: msg });
+        showTyping();
+
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": key,
+              "anthropic-version": "2023-06-01",
+              "anthropic-dangerous-direct-browser-access": "true",
+            },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-20250514",
+              max_tokens: 1000,
+              system: SYSTEM,
+              messages: history,
+            }),
+          });
+
+          const data = await res.json();
+          removeTyping();
+
+          if (data.content && data.content[0] && data.content[0].text) {
+            const reply = data.content[0].text;
+            history.push({ role: "assistant", content: reply });
+            addMsg(true, reply, history.length % 6 === 0);
+            updateMemory(msg);
+          } else {
+            const errMsg = data.error
+              ? data.error.message
+              : JSON.stringify(data);
+            addErr(errMsg);
+          }
+        } catch (e) {
+          removeTyping();
+          addErr(e.message || "Network error");
+        }
+
+        busy = false;
+        document.getElementById("send-btn").disabled = false;
+        document.getElementById("chat-input").focus();
+      }
+
+      function quickAsk(text) {
+        document.getElementById("chat-input").value = text;
+        sendMsg();
+      }
+
+      function clearChat() {
+        history = [];
+        memStore = [];
+        document.getElementById("memory-list").innerHTML =
+          '<div class="mem-item" style="color:var(--muted);font-size:0.7rem;border:none;background:none;">Bot se ghi nho ngu canh...</div>';
+        document.getElementById("messages").innerHTML = `
+    <div class="welcome" id="welcome-screen">
+      <div class="welcome-icon">\uD83E\uDD16</div>
+      <h2>Xin chao! Toi la AI cua Xelloxx</h2>
+      <p>Toi duoc dao tao chuyen sau ve shop va luon hoc hoi tu moi cuoc hoi thoai.</p>
+      <div class="welcome-tags">
+        <div class="welcome-tag" onclick="quickAsk('Kiem tra so du xu')">💰 So du xu</div>
+        <div class="welcome-tag" onclick="quickAsk('Huong dan nap tien')">💳 Nap tien</div>
+        <div class="welcome-tag" onclick="quickAsk('Cach mua hang')">🛍 Mua hang</div>
+        <div class="welcome-tag" onclick="quickAsk('Lien he CSKH')">📞 CSKH</div>
+      </div>
+    </div>`;
+      }
+
+      const ta = document.getElementById("chat-input");
+      ta.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = Math.min(this.scrollHeight, 120) + "px";
+      });
+      ta.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMsg();
+        }
+      });
+
+      window.addEventListener("load", () => {
+        const saved = getKey();
+        if (saved)
+          document.getElementById("api-key-input").value = "\u2022".repeat(20);
+        setTimeout(() => document.getElementById("chat-input").focus(), 300);
+      });
+    </script>
+  </body>
+</html>

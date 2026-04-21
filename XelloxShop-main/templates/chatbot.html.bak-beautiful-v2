@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💬 Chatbot Hỗ trợ - Xelloxx Shop</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080c14;
+        --bg2: #0f1623;
+        --card: #111827;
+        --accent: #ff6a00;
+        --accent2: #ff9500;
+        --text: #f0f0f0;
+        --muted: #8899aa;
+        --border: rgba(255, 150, 0, 0.12);
+        --green: #10b981;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Header */
+      .chat-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        z-index: 100;
+        backdrop-filter: blur(20px);
+      }
+      .chat-header .logo {
+        font-size: 1.3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .chat-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+      .back-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 0.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      /* Chat Container */
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-width: 800px;
+        margin: 0 auto;
+        padding-top: 70px;
+        padding-bottom: 80px;
+      }
+
+      /* Messages */
+      #chat-messages {
+        flex: 1;
+        padding: 1.5rem;
+        overflow-y: auto;
+        background: var(--bg);
+        scroll-behavior: smooth;
+      }
+      .chat-msg {
+        margin-bottom: 1.5rem;
+        animation: fadeIn 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-msg.bot {
+        align-items: flex-end;
+      }
+      .msg-bubble {
+        max-width: 85%;
+        padding: 1rem 1.2rem;
+        border-radius: 20px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        position: relative;
+      }
+      .msg-bot {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-bottom-right-radius: 6px;
+      }
+      .msg-user {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+        border-bottom-left-radius: 6px;
+        margin-left: auto;
+      }
+      .msg-time {
+        font-size: 0.7rem;
+        color: var(--muted);
+        margin-top: 0.4rem;
+        font-family: "Space Mono", monospace;
+      }
+
+      /* Typing indicator */
+      #chat-typing {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 0.8rem 1rem;
+        font-style: italic;
+        color: var(--muted);
+        font-size: 0.9rem;
+        max-width: 85%;
+        margin-bottom: 1rem;
+      }
+
+      /* Input Area */
+      .chat-input-area {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg2);
+        border-top: 1px solid var(--border);
+        padding: 1.5rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      #chat-input {
+        flex: 1;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 25px;
+        color: var(--text);
+        padding: 1rem 1.5rem;
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        outline: none;
+        resize: none;
+        max-height: 120px;
+        line-height: 1.4;
+      }
+      #chat-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.1);
+      }
+      #chat-send {
+        width: 52px;
+        height: 52px;
+        margin-left: 0.8rem;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: 0.2s;
+      }
+      #chat-send:hover:not(:disabled) {
+        transform: scale(1.05);
+      }
+      #chat-send:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Empty state */
+      .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--muted);
+      }
+      .empty-state svg {
+        width: 80px;
+        height: 80px;
+        opacity: 0.5;
+        margin-bottom: 1rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .chat-header {
+          padding: 1rem;
+        }
+        .chat-container {
+          padding: 60px 1rem 80px;
+        }
+        #chat-messages {
+          padding: 1rem;
+        }
+        .chat-input-area {
+          padding: 1rem;
+        }
+      }
+
+      /* Scrollbar */
+      #chat-messages::-webkit-scrollbar {
+        width: 6px;
+      }
+      #chat-messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      #chat-messages::-webkit-scrollbar-thumb {
+        background: rgba(255, 106, 0, 0.3);
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="chat-header">
+      <a href="/" class="back-btn"> ← Quay lại </a>
+      <div style="flex: 1">
+        <div class="logo" style="font-size: 1.1rem; display: inline-block">
+          Xell<span>o</span>xx
+        </div>
+        <span class="chat-title">🤖 Chatbot Hỗ trợ</span>
+      </div>
+    </div>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+      <div id="chat-messages">
+        <!-- Dynamic content loaded via JS -->
+        <div class="empty-state" id="empty-state">
+          <div style="font-size: 4rem">💬</div>
+          <h3
+            style="font-size: 1.3rem; margin-bottom: 0.5rem; font-weight: 700"
+          >
+            Bắt đầu trò chuyện
+          </h3>
+          <p>Gõ tin nhắn để bắt đầu chat với bot hỗ trợ!</p>
+          <div style="margin-top: 1.5rem; opacity: 0.7">
+            <div>💰 "số dư" - Kiểm tra xu</div>
+            <div>💳 "nạp" - Hướng dẫn nạp tiền</div>
+            <div>📞 "hỗ trợ" - Liên hệ CSKH</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="chat-input-area">
+      <div style="display: flex; gap: 1rem; align-items: end">
+        <textarea
+          id="chat-input"
+          placeholder="Nhập tin nhắn... (Enter để gửi)"
+          rows="1"
+        ></textarea>
+        <button id="chat-send" onclick="sendChatMsg()">📤</button>
+      </div>
+    </div>
+
+    <script>
+      let chatTyping = false;
+      let lastMsgTime = 0;
+      const API_BASE = "/api";
+
+      // Auto-resize textarea
+      document
+        .getElementById("chat-input")
+        .addEventListener("input", function () {
+          this.style.height = "auto";
+          this.style.height = Math.min(this.scrollHeight, 120) + "px";
+        });
+
+      // Enter to send
+      document
+        .getElementById("chat-input")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendChatMsg();
+          }
+        });
+
+      // Load history + init
+      async function initChat() {
+        try {
+          const res = await fetch(`${API_BASE}/me`);
+          const user = await res.json();
+          if (!user.ok) {
+            document.getElementById("empty-state").innerHTML = `
+            <div style="padding: 2rem; text-align: center;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">🔐</div>
+              <h3>Vui lòng đăng nhập để chat</h3>
+              <a href="/login" style="display: inline-block; margin-top: 1rem; padding: 0.7rem 1.5rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; text-decoration: none; border-radius: 10px; font-weight: 700;">Đăng nhập</a>
+            </div>
+          `;
+            return;
+          }
+
+          // Load history
+          const histRes = await fetch(`${API_BASE}/chat-history`);
+          const history = await histRes.json();
+
+          const msgsEl = document.getElementById("chat-messages");
+          if (history.length) {
+            msgsEl.innerHTML = history
+              .map((msg) => chatMsgHTML(msg.is_bot, msg.content, msg.timestamp))
+              .join("");
+          } else {
+            // Welcome message
+            msgsEl.innerHTML = `
+            <div class="chat-msg bot">
+              <div class="msg-bubble msg-bot">
+                Xin chào ${user.username}! 🤖<br><br>
+                Tôi là bot hỗ trợ Xelloxx Shop. Tôi có thể giúp:<br>
+                • <strong>số dư</strong> - Kiểm tra số xu<br>
+                • <strong>nạp</strong> - Hướng dẫn nạp tiền<br>
+                • <strong>hỗ trợ</strong> - Liên hệ CSKH<br>
+                • <strong>mua hàng</strong> - Hướng dẫn checkout<br>
+                • <strong>giới thiệu</strong> - Mã referral
+              </div>
+              <div class="msg-time">${new Date().toLocaleString("vi-VN")}</div>
+            </div>
+          `;
+          }
+          msgsEl.scrollTop = msgsEl.scrollHeight;
+        } catch (e) {
+          console.error("Init chat error:", e);
+        }
+      }
+
+      function chatMsgHTML(isBot, content, timestamp) {
+        const cls = isBot ? "bot msg-bot" : "user msg-user";
+        const time =
+          timestamp ||
+          new Date().toLocaleString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        return `
+        <div class="chat-msg ${cls}">
+          <div class="msg-bubble">${content.replace(/\\n/g, "<br>")}</div>
+          <div class="msg-time">${time}</div>
+        </div>
+      `;
+      }
+
+      async function sendChatMsg() {
+        const input = document.getElementById("chat-input");
+        const msg = input.value.trim();
+        if (!msg || Date.now() - lastMsgTime < 1000 || chatTyping) return;
+
+        input.value = "";
+        input.style.height = "auto";
+        lastMsgTime = Date.now();
+
+        // Add user message
+        const msgsEl = document.getElementById("chat-messages");
+        const userMsg = chatMsgHTML(false, msg);
+        msgsEl.insertAdjacentHTML("beforeend", userMsg);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+
+        // Typing indicator
+        const typingEl = document.createElement("div");
+        typingEl.id = "chat-typing";
+        typingEl.className = "chat-msg bot";
+        typingEl.innerHTML =
+          '<div class="msg-bubble msg-bot">Bot đang suy nghĩ<span style="display:inline-block;animation:blink 1.5s infinite;">...</span></div>';
+        msgsEl.appendChild(typingEl);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+
+        chatTyping = true;
+        document.getElementById("chat-send").disabled = true;
+
+        try {
+          const res = await fetch(`${API_BASE}/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg }),
+          });
+          const data = await res.json();
+
+          // Remove typing
+          msgsEl.removeChild(typingEl);
+
+          if (data.ok) {
+            msgsEl.insertAdjacentHTML(
+              "beforeend",
+              chatMsgHTML(true, data.response),
+            );
+          } else {
+            msgsEl.insertAdjacentHTML(
+              "beforeend",
+              chatMsgHTML(true, "Xin lỗi, có lỗi xảy ra. Thử lại sau!"),
+            );
+          }
+        } catch (e) {
+          msgsEl.removeChild(typingEl);
+          msgsEl.insertAdjacentHTML(
+            "beforeend",
+            chatMsgHTML(true, "Lỗi kết nối mạng. Kiểm tra và thử lại."),
+          );
+        }
+
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        chatTyping = false;
+        document.getElementById("chat-send").disabled = false;
+      }
+
+      // Init on load
+      window.addEventListener("load", initChat);
+
+      // CSS for typing dots
+      const style = document.createElement("style");
+      style.textContent = `
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+      }
+    `;
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>

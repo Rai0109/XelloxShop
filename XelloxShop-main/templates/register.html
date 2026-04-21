@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký - Xellox Shop</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080c14;
+        --card: #111827;
+        --border: rgba(255, 150, 0, 0.15);
+        --accent: #ff6a00;
+        --accent2: #ff9500;
+        --text: #e8eaf0;
+        --muted: #8892a4;
+        --green: #10b981;
+        --red: #ef4444;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .bg {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 0%,
+          rgba(255, 106, 0, 0.1),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 2.5rem;
+        width: 100%;
+        max-width: 440px;
+        position: relative;
+        z-index: 1;
+      }
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 0.3rem;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .sub {
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.88rem;
+        margin-bottom: 1.8rem;
+      }
+      .form-row {
+        margin-bottom: 1rem;
+      }
+      .form-row label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+        font-family: "Space Mono", monospace;
+        letter-spacing: 0.5px;
+      }
+      .form-row input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        font-size: 0.9rem;
+        outline: none;
+        transition: 0.2s;
+      }
+      .form-row input:focus {
+        border-color: var(--accent);
+        background: rgba(255, 106, 0, 0.04);
+      }
+      .btn {
+        width: 100%;
+        padding: 0.85rem;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        color: #fff;
+        border: none;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .msg {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+        display: none;
+      }
+      .msg.err {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #f87171;
+      }
+      .msg.ok {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #34d399;
+      }
+      .links {
+        text-align: center;
+        margin-top: 1.2rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .links a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg"></div>
+    <div class="card">
+      <div class="logo">🛒 Xellox Shop</div>
+      <div class="sub">Tạo tài khoản mới</div>
+
+      <div class="msg" id="msg"></div>
+
+      <div class="form-row">
+        <label>Tên đăng nhập</label>
+        <input
+          type="text"
+          id="user"
+          placeholder="username (tối thiểu 3 ký tự)"
+          autocomplete="username"
+        />
+      </div>
+      <div class="form-row">
+        <label>Email</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="email@gmail.com"
+          autocomplete="email"
+        />
+      </div>
+      <div class="form-row">
+        <label>Mật khẩu</label>
+        <input
+          type="password"
+          id="pass"
+          placeholder="•••••••• (tối thiểu 6 ký tự)"
+          autocomplete="new-password"
+        />
+      </div>
+      <div class="form-row">
+        <label>Xác nhận mật khẩu</label>
+        <input
+          type="password"
+          id="pass2"
+          placeholder="••••••••"
+          autocomplete="new-password"
+        />
+      </div>
+      <div class="form-row">
+        <label>Mã giới thiệu (tùy chọn)</label>
+        <input type="text" id="ref-code" placeholder="Nhập mã nếu có..." />
+      </div>
+      <button class="btn" onclick="register()">🚀 Đăng ký ngay</button>
+
+      <div class="links">Đã có tài khoản? <a href="/login">Đăng nhập</a></div>
+    </div>
+
+    <script>
+      const urlRef = new URLSearchParams(location.search).get("ref");
+      if (urlRef) document.getElementById("ref-code").value = urlRef;
+
+      function showMsg(text, type = "err") {
+        const m = document.getElementById("msg");
+        m.textContent = text;
+        m.className = "msg " + type;
+        m.style.display = "block";
+        if (type === "ok") setTimeout(() => (m.style.display = "none"), 4000);
+      }
+
+      async function register() {
+        const u = document.getElementById("user").value.trim();
+        const e = document.getElementById("email").value.trim();
+        const p = document.getElementById("pass").value;
+        const p2 = document.getElementById("pass2").value;
+        const refCode = document.getElementById("ref-code").value.trim();
+        if (u.length < 3) return showMsg("Tên đăng nhập tối thiểu 3 ký tự");
+        if (!e || !e.includes("@")) return showMsg("Email không hợp lệ");
+        if (p.length < 6) return showMsg("Mật khẩu tối thiểu 6 ký tự");
+        if (p !== p2) return showMsg("Mật khẩu không khớp");
+        const btn = event.target;
+        btn.disabled = true;
+        btn.textContent = "Đang xử lý...";
+        try {
+          const r = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username: u,
+              email: e,
+              password: p,
+              referral_code: refCode,
+            }),
+          });
+          const d = await r.json();
+          if (d.ok) {
+            showMsg(
+              "🎉 Đăng ký thành công! Đang chuyển đến đăng nhập...",
+              "ok",
+            );
+            setTimeout(() => (location.href = "/login"), 1500);
+          } else {
+            showMsg(d.msg);
+            btn.disabled = false;
+            btn.textContent = "🚀 Đăng ký ngay";
+          }
+        } catch (err) {
+          showMsg("Lỗi kết nối");
+          btn.disabled = false;
+          btn.textContent = "🚀 Đăng ký ngay";
+        }
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") register();
+      });
+    </script>
+  </body>
+</html>

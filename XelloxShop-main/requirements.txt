@@ -1,0 +1,9 @@
+Flask
+grok
+sentence-transformers
+faiss-cpu
+numpy
+torch
+scikit-learn
+openai
+requests
