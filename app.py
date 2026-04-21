@@ -485,34 +485,22 @@ def test_smtp():
 @rate_limit("register",5,300)
 def register():
     db=load_db(); data=request.json or {}
-    email=data.get("email","").strip().lower()
     username=data.get("username","").strip()
     password=data.get("password","")
-    otp_code=data.get("otp_code","").strip()
+    ref_code=data.get("referral_code","").strip().upper()
     if len(username)<3: return jsonify({"ok":False,"msg":"Tên đăng nhập tối thiểu 3 ký tự"})
     if len(password)<6: return jsonify({"ok":False,"msg":"Mật khẩu tối thiểu 6 ký tự"})
     if any(u["username"]==username for u in db["users"]): return jsonify({"ok":False,"msg":"Tên đăng nhập đã tồn tại"})
-    if any(u.get("email","").lower()==email for u in db["users"]): return jsonify({"ok":False,"msg":"Email đã được sử dụng"})
-    with _otp_lock:
-        entry=_otp_store.get(email)
-        if not entry: return jsonify({"ok":False,"msg":"Chưa xác thực OTP. Vui lòng gửi và xác thực mã OTP."})
-        if time.time()>entry["expires"]:
-            del _otp_store[email]
-            return jsonify({"ok":False,"msg":"Mã OTP đã hết hạn. Hãy gửi lại mã."})
-        if entry["code"]!=otp_code: return jsonify({"ok":False,"msg":"Mã OTP không đúng"})
-        if not entry.get("verified"): return jsonify({"ok":False,"msg":"OTP chưa được xác thực. Nhấn 'Xác thực OTP' trước."})
-        del _otp_store[email]
-    ref_code=data.get("referral_code","").strip().upper()
     referred_by=""
     if ref_code:
         referrer=next((u for u in db["users"] if u.get("referral_code","").upper()==ref_code),None)
         if not referrer: return jsonify({"ok":False,"msg":"Mã giới thiệu không hợp lệ"})
         referred_by=referrer["username"]
     new_ref=username.upper()[:6]+str(uuid.uuid4())[:4].upper()
-    new_user={"id":str(uuid.uuid4()),"username":username,"email":email,"password":hash_pw(password),
+    new_user={"id":str(uuid.uuid4()),"username":username,"password":hash_pw(password),
               "balance":0,"referral_code":new_ref,"referred_by":referred_by,"cart":[],
               "avatar":"","full_name":"","phone":"",
-              "created_at":datetime.datetime.now().strftime("%d/%m/%Y"),"email_verified":True}
+              "created_at":datetime.datetime.now().strftime("%d/%m/%Y"),"email_verified":False}
     db["users"].append(new_user)
     if referred_by:
         reward=db.get("settings",{}).get("referral_reward",10000)

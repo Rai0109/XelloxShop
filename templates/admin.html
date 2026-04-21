@@ -57,12 +57,21 @@
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       }
       .auth-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
         font-size: 2rem;
         font-weight: 800;
         margin-bottom: 0.3rem;
         background: linear-gradient(90deg, var(--accent), var(--accent2));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+      }
+      .auth-logo img {
+        height: 36px;
+        max-height: 44px;
+        width: auto;
       }
       .auth-sub {
         color: var(--muted);
@@ -99,6 +108,9 @@
         z-index: 50;
       }
       .sidebar-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         padding: 0 1rem 1.2rem;
         font-size: 1.1rem;
         font-weight: 800;
@@ -106,6 +118,11 @@
         background: linear-gradient(90deg, var(--accent), var(--accent2));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+      }
+      .sidebar-logo img {
+        height: 22px;
+        max-height: 28px;
+        width: auto;
       }
       .sidebar-nav {
         flex: 1;
@@ -416,6 +433,50 @@
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
       }
+      @media (max-width: 768px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+        }
+        .table-wrap {
+          overflow-x: auto;
+        }
+        table {
+          min-width: 600px;
+        }
+        th,
+        td {
+          padding: 0.6rem 0.5rem;
+          font-size: 0.8rem;
+          white-space: nowrap;
+        }
+        .topbar {
+          padding: 1rem;
+        }
+        .content {
+          padding: 1rem;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        }
+        .table-header {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0.8rem;
+        }
+        .table-header h3 {
+          margin: 0;
+        }
+      }
       .search-inline {
         padding: 0.5rem 0.85rem;
         background: var(--bg2);
@@ -426,6 +487,7 @@
         font-size: 0.82rem;
         outline: none;
         min-width: 180px;
+        flex: 1;
       }
       .search-inline:focus {
         border-color: var(--accent);
@@ -570,7 +632,14 @@
     <!-- AUTH -->
     <div id="authScreen">
       <div class="auth-card">
-        <div class="auth-logo">🛒 xellox shop</div>
+        <div class="auth-logo">
+          <img
+            src="/static/logo.png"
+            alt="Xelloxx Logo"
+            onerror="this.style.display = 'none'"
+          />
+          <span>🛒 xellox shop</span>
+        </div>
         <div class="auth-sub">Admin Panel — Đăng nhập để tiếp tục</div>
         <div class="auth-error" id="authErr"></div>
         <div class="auth-form">
@@ -612,8 +681,23 @@
     </div>
 
     <!-- SIDEBAR -->
+    <button
+      class="hamburger"
+      id="adminHamburger"
+      onclick="toggleAdminSidebar()"
+      style="position: fixed; top: 1rem; left: 1rem; z-index: 60; display: none"
+    >
+      <span></span><span></span><span></span>
+    </button>
     <div class="sidebar" id="sidebar">
-      <div class="sidebar-logo">🛒 xellox shop</div>
+      <div class="sidebar-logo">
+        <img
+          src="/static/logo.png"
+          alt="Xelloxx Logo"
+          onerror="this.style.display = 'none'"
+        />
+        <span>🛒 xellox shop</span>
+      </div>
       <nav class="sidebar-nav">
         <a class="nav-item active" onclick="showPage('dashboard', this)"
           ><span class="icon">📊</span> Dashboard</a
@@ -2274,6 +2358,18 @@
       }
 
       // ===== INIT =====
+      function toggleAdminSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const ham = document.getElementById("adminHamburger");
+        sidebar.classList.toggle("open");
+        ham.classList.toggle("active");
+      }
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 768) {
+          document.getElementById("sidebar").classList.remove("open");
+          document.getElementById("adminHamburger").classList.remove("active");
+        }
+      });
       checkAuth();
     </script>
   </body>

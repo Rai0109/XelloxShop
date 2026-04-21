@@ -49,9 +49,17 @@
         border-bottom: 1px solid var(--border);
       }
       .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         font-size: 1.6rem;
         font-weight: 800;
         letter-spacing: -1px;
+      }
+      .logo img {
+        height: 32px;
+        max-height: 40px;
+        width: auto;
       }
       .logo span {
         color: var(--accent);
@@ -101,9 +109,40 @@
       .hamburger {
         display: none;
         flex-direction: column;
-        gap: 5px;
+        gap: 4px;
         cursor: pointer;
         padding: 4px;
+        z-index: 101;
+      }
+      .hamburger span {
+        width: 24px;
+        height: 2px;
+        background: var(--text);
+        transition: 0.3s;
+        border-radius: 2px;
+      }
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+      @media (max-width: 768px) {
+        .stats-row {
+          gap: 1.5rem;
+          flex-direction: column;
+        }
+        .hero-btns {
+          flex-direction: column;
+          align-items: center;
+        }
+        .hero-btns .btn {
+          width: 100%;
+          max-width: 250px;
+        }
       }
       .hamburger span {
         width: 24px;
@@ -612,8 +651,20 @@
   </head>
   <body>
     <nav>
-      <div class="logo">Xell<span>o</span>xx</div>
+      <div class="logo">
+        <img
+          src="/static/logo.png"
+          alt="Xelloxx Logo"
+          onerror="this.style.display = 'none'"
+        />
+        <span>Xell<span>o</span>xx</span>
+      </div>
 
+      <button class="hamburger" id="hamburger" onclick="toggleNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <div class="nav-links" id="navLinks">
         <a href="#">Trang chủ</a>
         <a href="#products">Sản phẩm</a>
@@ -1161,9 +1212,20 @@
         }, 1000);
       }
 
-      function toggleMenu() {
-        document.getElementById("navLinks").classList.toggle("open");
+      function toggleNav() {
+        const links = document.getElementById("navLinks");
+        const ham = document.getElementById("hamburger");
+        links.classList.toggle("open");
+        ham.classList.toggle("active");
       }
+      document.addEventListener("click", (e) => {
+        const links = document.getElementById("navLinks");
+        const ham = document.getElementById("hamburger");
+        if (!links.contains(e.target) && !ham.contains(e.target)) {
+          links.classList.remove("open");
+          ham.classList.remove("active");
+        }
+      });
 
       async function loadFeaturedReviews() {
         // Get recent reviews - for demo, generate fake ones

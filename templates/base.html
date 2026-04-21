@@ -8,6 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/static/base-responsive.css" />
     <style>
       :root {
         --bg: #080c14;
@@ -48,12 +49,20 @@
         border-bottom: 1px solid var(--border);
       }
       .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         font-size: 1.25rem;
         font-weight: 800;
         background: linear-gradient(90deg, var(--accent), var(--accent2));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-decoration: none;
+      }
+      .logo img {
+        height: 24px;
+        max-height: 32px;
+        width: auto;
       }
       .nav-links {
         display: flex;
@@ -242,8 +251,18 @@
   </head>
   <body>
     <nav>
-      <a href="/" class="logo">Xelloxx</a>
-      <div class="nav-links">
+      <a href="/" class="logo">
+        <img
+          src="/static/logo.png"
+          alt="Xelloxx Logo"
+          onerror="this.style.display = 'none'"
+        />
+        <span>Xelloxx</span>
+      </a>
+      <button class="hamburger" id="hamburger" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="navLinks">
         <a href="/" class="nav-link {% if request.path=='/' %}active{% endif %}"
           >🏪 Shop</a
         >
@@ -305,6 +324,35 @@
       </div>
     </nav>
     <div class="toast" id="toast"></div>
+
+    <!-- Announcement Modal: Latest admin notification on entry -->
+    <div
+      class="modal-overlay"
+      id="announceModal"
+      onclick="dismissAnnouncement(event)"
+    >
+      <div class="modal" style="max-width: 500px">
+        <div class="modal-head">
+          <h3 id="announceTitle">📢 Thông báo mới nhất</h3>
+          <button class="modal-close" onclick="dismissAnnouncement()">×</button>
+        </div>
+        <div
+          class="modal-body"
+          id="announceBody"
+          style="white-space: pre-line; line-height: 1.6"
+        ></div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-primary"
+            onclick="dismissAnnouncement()"
+            style="flex: 1"
+          >
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
     {% block content %}{% endblock %}
     <script>
       function showToast(msg,type='green'){
@@ -316,6 +364,21 @@
         await fetch('/api/logout',{method:'POST'});
         location.href='/login';
       }
+      function toggleNav() {
+        const links = document.getElementById('navLinks');
+        const ham = document.getElementById('hamburger');
+        links.classList.toggle('open');
+        ham.classList.toggle('active');
+      }
+      document.addEventListener('click', (e) => {
+        const links = document.getElementById('navLinks');
+        const ham = document.getElementById('hamburger');
+        if (!links.contains(e.target) && !ham.contains(e.target)) {
+          links.classList.remove('open');
+          ham.classList.remove('active');
+        }
+      });
+
       // Live notification polling
       let lastNotifCount = {{ notif_count if notif_count is defined else 0 }};
       {% if user %}
@@ -331,6 +394,49 @@
         }
       },30000);
       {% endif %}
+
+      // Announcement: Show latest public/admin notif on page entry
+      async function checkAnnouncement() {
+        try {
+          const r = await fetch('/api/public-notifications');
+          const d = await r.json();
+          if (!d.notifications?.length) return;
+          const latest = d.notifications[0];
+          const dismissedKey = 'dismissed_' + latest.id;
+          const dismissedTime = localStorage.getItem(dismissedKey);
+          const now = Date.now();
+          if (dismissedTime && now - parseInt(dismissedTime) < 2 * 60 * 60 * 1000) return; // 2 hours
+
+          document.getElementById('announceTitle').textContent = latest.title || '📢 Thông báo từ Admin';
+          document.getElementById('announceBody').innerHTML = latest.body.replace(/\n/g, '<br>');
+          document.getElementById('announceModal').classList.add('open');
+
+          // Auto-dismiss after 15 seconds
+          setTimeout(dismissAnnouncement, 15000);
+        } catch(e) {
+          console.log('No public announcements');
+        }
+      }
+
+      function dismissAnnouncement(e) {
+        if (e && e.target.classList.contains('modal-overlay')) return;
+        const modal = document.getElementById('announceModal');
+        modal.classList.remove('open');
+
+        // Update localStorage with current latest
+        fetch('/api/public-notifications').then(r => r.json()).then(d => {
+          if (d.notifications?.length) {
+            localStorage.setItem('dismissed_' + d.notifications[0].id, Date.now().toString());
+          }
+        });
+      }
+
+      // Check on page load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkAnnouncement);
+      } else {
+        checkAnnouncement();
+      }
     </script>
     {% block scripts %}{% endblock %}
   </body>

@@ -1,0 +1,162 @@
+/* Mobile Responsive Fixes for base.html - Added Sep 2024 */
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  transition: 0.3s;
+  border-radius: 2px;
+}
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Responsive Typography */
+html {
+  font-size: 16px;
+}
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* MOBILE: Nav */
+@media (max-width: 900px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 280px;
+    background: rgba(8, 12, 20, 0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5rem 1.5rem 2rem;
+    gap: 0;
+    transition: right 0.3s ease;
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+  }
+  .nav-links.open {
+    right: 0;
+  }
+  .nav-links .nav-link {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 1rem 0;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 150, 0, 0.1);
+  }
+  .nav-links .btn-nav {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  nav {
+    padding: 0.8rem 1rem;
+  }
+}
+
+/* MOBILE: Page/Content */
+@media (max-width: 768px) {
+  .page {
+    padding: 4.5rem 1rem 2rem;
+    max-width: 100%;
+  }
+  .card {
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+  input,
+  textarea,
+  select {
+    padding: 0.65rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  label {
+    font-size: 0.72rem;
+  }
+  .btn {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.85rem;
+  }
+  .nav-link {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.8rem;
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 4rem 0.8rem 1.5rem;
+  }
+  .card {
+    padding: 1rem;
+    border-radius: 10px;
+  }
+  .logo {
+    font-size: 1.1rem;
+    gap: 0.3rem;
+  }
+  .logo img {
+    height: 20px;
+  }
+  input,
+  textarea,
+  select {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.88rem;
+  }
+  .btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+  }
+}
+
+/* Overflow Protection */
+@media (max-width: 480px) {
+  table {
+    font-size: 0.8rem;
+  }
+  th,
+  td {
+    padding: 0.5rem 0.4rem;
+  }
+}
+
+/* Ensure no overflow */
+* {
+  max-width: 100%;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
